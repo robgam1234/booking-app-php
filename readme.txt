@@ -10,10 +10,10 @@ Requirements:
   PHP JSON extension [http://php.net/manual/en/book.json.php]
 
 Project page:
-  https://github.com/TDispatch/Passenger-API-php
+  https://github.com/TDispatch/Passenger-API
 
 Report a defect or feature request here:
-  https://github.com/TDispatch/Passenger-API-php/issues
+  https://github.com/TDispatch/Passenger-API/issues
 
 
 == What you need to configure?
