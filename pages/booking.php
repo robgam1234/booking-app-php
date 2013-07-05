@@ -714,7 +714,8 @@ if (!!$customFieldsForm) {
 				
 			
         //Datepicker default values
-        var defaultDate = myDate.getDate()+'/'+(myDate.getMonth()+1 < 10 ? "0" : "")+(myDate.getMonth()+1)+'/'+(myDate.getDate() < 10 ? "0" : "")+myDate.getFullYear();
+        var defaultDate = $.datepicker.formatDate('dd/mm/yy', new Date());
+
         if($("#date").val()=='')
             $("#date").val(defaultDate);
 				
