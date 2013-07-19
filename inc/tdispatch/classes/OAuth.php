@@ -66,6 +66,7 @@ class OAuth {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $databody);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //WRITE URL
         //Execute post
         $authrezult = curl_exec($ch);        
@@ -98,6 +99,7 @@ class OAuth {
                 curl_setopt($token, CURLOPT_URL, $url);
                 curl_setopt($token, CURLOPT_POST, count($data));
                 curl_setopt($token, CURLOPT_POSTFIELDS, json_encode($data));
+                curl_setopt($token, CURLOPT_SSL_VERIFYPEER, false);
 
                 //Execute post
                 $result = curl_exec($token);
