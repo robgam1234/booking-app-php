@@ -32,6 +32,7 @@ class Account {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($passenger));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($passenger));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -110,6 +111,7 @@ class Account {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -196,6 +198,7 @@ class Account {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($preferences));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($preferences));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //Execute post
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
@@ -218,6 +221,7 @@ class Account {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -248,6 +252,7 @@ class Account {
         );
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataSend));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         
         if($td->debug){
             error_log(__FILE__.' in line '.__LINE__);
@@ -282,6 +287,7 @@ class Account {
         
         curl_setopt($ch, CURLOPT_POST, count($requestBody));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestBody));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         
         if($td->debug){
             error_log(__FILE__.' in line '.__LINE__);

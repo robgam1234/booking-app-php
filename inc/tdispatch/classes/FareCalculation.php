@@ -36,6 +36,7 @@ class FareCalculation {
 
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 //Execute post
         $result = curl_exec($ch);

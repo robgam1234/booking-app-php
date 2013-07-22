@@ -38,7 +38,7 @@ class Bookings {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
-
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -67,6 +67,7 @@ class Bookings {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
        
         $dataSend = array(
             'customer' => $customer,
@@ -92,6 +93,7 @@ class Bookings {
 
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -122,6 +124,7 @@ class Bookings {
             //Set the url, Number of POST vars, POST data
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             //Execute post
             $result = curl_exec($ch);
@@ -181,6 +184,7 @@ class Bookings {
 
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -217,6 +221,7 @@ class Bookings {
 
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataSend));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);
@@ -247,6 +252,7 @@ class Bookings {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);        
@@ -282,6 +288,7 @@ class Bookings {
 
             curl_setopt($ch, CURLOPT_POST, count($dataSend));
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             //Execute post
             $result = curl_exec($ch);
@@ -316,6 +323,7 @@ class Bookings {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         //Execute post
         $result = curl_exec($ch);

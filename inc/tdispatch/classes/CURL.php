@@ -28,7 +28,8 @@ class CURL {
         if (!isset($this->ch)) {            
             $options = array(
                 CURLOPT_RETURNTRANSFER => true, // return web page
-                CURLOPT_URL => $this->site
+                CURLOPT_URL => $this->site,
+                CURLOPT_SSL_VERIFYPEER=> false
             );
             $this->ch = curl_init($this->site);
             curl_setopt_array($this->ch, $options);
@@ -39,6 +40,8 @@ class CURL {
         if (isset($this->ch)) {
             curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($this->ch, CURLOPT_HEADER, false);
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
+
             return curl_exec($this->ch);
         }
     }
@@ -47,6 +50,7 @@ class CURL {
         if (isset($this->ch)) {
             curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, false);
             curl_setopt($this->ch, CURLOPT_HEADER, true);
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
             return curl_exec($this->ch);
         }
     }
@@ -72,6 +76,7 @@ class CURL {
         if(count($data)){            
             curl_setopt($this->ch, CURLOPT_POST, true);
             curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
         }
     }
 
