@@ -11,8 +11,8 @@ $statusmsg = '';
 
 /**
   Update info
- * 
- * 
+ *
+ *
  */
 if (isset($_POST['update']) && $_POST['update'] === 'Update') {
     $userData = array();
@@ -29,7 +29,7 @@ if (isset($_POST['update']) && $_POST['update'] === 'Update') {
     else
         $errors['update_lastname'] = 'Surname: this field is required.';
 
-    //phone        
+    //phone
     if (isset($_POST['update_phone']) && trim($_POST['update_phone']) != '')
         $userData['phone'] = (trim($_POST['update_phone']));
     else
@@ -85,9 +85,9 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
     <!--ACCOUNT FORM CONTAINER-->
     <!--Update fields-->
     <?php
-//Get user data from session
+    //Get user data from session
     $userInfo = $td->Account_getPreferences();
-    
+
     if (!$userInfo)
         $statusmsg = $td->getErrorMessage();
     $errormsg = '';
@@ -97,10 +97,11 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
         }
     }
     ?>
+
     <div class="account_fields_cont box-container">
         <h1>Your Account Details <font><?php if (isset($statusmsg)) echo $statusmsg; ?>&nbsp;</font></h1>
         <div style="color:red;"><?php echo $errormsg; ?></div><br/>
-        <form id="update_form" name="update_form" class="update_form" method="post" autocomplete="off" action="/account">
+        <form id="update_form" name="update_form" class="update_form" method="post" autocomplete="off" action="">
             <div class="wrapper">
                 <div class="update_fieldblock">
                     <label>Name:</label>
@@ -148,11 +149,13 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                 <label for="box_3" class="account_label">Use account location as pickup</label>
             </div>
             <!--Update checkboxes-->
-            <input class="blue-button" type="submit" name="update" value="Update"  id="update_submit" />
+            <input class="account_buttons blue-button" type="submit" name="update" value="Update"  id="update_submit" />
+            <input class="account_buttons blue-button" type="button" name="change_cur_pass" value="Change Password"  id="change_cur_pass" />
+        </form>
         </form>
     </div>
 
-    <!--ACCOUNT FORM CONTAINER-->	
+    <!--ACCOUNT FORM CONTAINER-->
 
     <!--MAP CONTAINER-->
     <div id="right_float_cont">
@@ -166,39 +169,44 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
     <div style="clear:both"></div>
     <script type="text/javascript">
         $(function() {
+            // code to the change pass page
+            $('#change_cur_pass').click(function(){
+                window.location="/change-password";
+            });
+
             //account code
-            if($("#update_form").length){   
+            if($("#update_form").length){
                 $.validator.addMethod("monthTest", function(value, element, param) {
                     return this.optional(element) || /^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/.test( value );
                 }, "* Invalid Date");
-		
+
                 //Update validation
                 var validateUpdateAccount = $("#update_form").validate({
                     rules: {
                         update_name: {
-                            required: true, 
+                            required: true,
                             notEqual: "First Name"
                         },
                         update_lastname : {
-                            required: true, 
+                            required: true,
                             notEqual: "Last Name"
                         },
                         update_phone    : {
                             NumbersOnly:true,
-                            minlength: 8, 
-                            maxlength: 13,                         
-                            required: true, 
+                            minlength: 8,
+                            maxlength: 13,
+                            required: true,
                             notEqual: "Phone"
                         },
                         update_email    : {
-                            required: true, 
+                            required: true,
                             email: true
                         },
                         update_dob      : {
                             required: true
                         },
                         update_address  : {
-                            //required: true, 
+                            //required: true,
                             notEqual: "Address"
                         }
                     },
@@ -213,7 +221,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                         update_address   : ""
                     }
                 });
-		              
+
 
                 $('#update_dob').datepicker({
                     changeMonth: true,
@@ -223,20 +231,23 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                         $('#update_dob').removeClass('error');
                     },
                     dateFormat        : "dd/mm/yy",
-                    constrainInput    : true  
-                });                               
-               
+                    constrainInput    : true
+                });
+
                 autocomplete_getLocation("#update_address",'#update_address_obj',10,false);
-                
+
                 $('#update_address').change(function(){
-                    var address = $(this).val();                  
+                    var address = $(this).val();
                     if(address === ''){
                         $('#update_address_obj').val('');
                         $('#update_address_obj').data("location",'');
                     }
                 });
-            
+
             }
+
+
+
             // Handler for .ready() called.
         });
     </script>

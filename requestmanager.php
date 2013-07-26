@@ -20,6 +20,9 @@ switch ($page) {
     case 'reset-password':
         include 'pages/reset-password.php';
         break;
+    case 'change-password':
+        include 'pages/change-password.php';
+        break;
     case 'bookings':
         include 'pages/bookings.php';
         break;
