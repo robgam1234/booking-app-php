@@ -11,8 +11,8 @@ $statusmsg = '';
 
 /**
   Update info
- * 
- * 
+ *
+ *
  */
 if (isset($_POST['update']) && $_POST['update'] === 'Update') {
     $userData = array();
@@ -29,7 +29,7 @@ if (isset($_POST['update']) && $_POST['update'] === 'Update') {
     else
         $errors['update_lastname'] = 'Surname: this field is required.';
 
-    //phone        
+    //phone
     if (isset($_POST['update_phone']) && trim($_POST['update_phone']) != '')
         $userData['phone'] = (trim($_POST['update_phone']));
     else
@@ -69,6 +69,8 @@ if (isset($_POST['update']) && $_POST['update'] === 'Update') {
         $output = $td->Account_setPreferences($userData);
         if (!$output)
             $statusmsg = $td->getErrorMessage();
+        else
+            $_SESSION['updated-data'] = 'SUCCESS!';
     }
 }
 ?>
@@ -87,7 +89,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
     <?php
 //Get user data from session
     $userInfo = $td->Account_getPreferences();
-    
+
     if (!$userInfo)
         $statusmsg = $td->getErrorMessage();
     $errormsg = '';
@@ -97,6 +99,13 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
         }
     }
     ?>
+
+    <?php if (isset($_SESSION['updated-data']) && $_SESSION['updated-data'] == 'SUCCESS!'): ?>
+    <div id="updated_data_message" class="account_fields_cont box-container">
+        <h1>Account information updated</h1>
+    </div>
+    <?php unset($_SESSION['updated-data']); endif ?>
+
     <div class="account_fields_cont box-container">
         <h1>Your Account Details <font><?php if (isset($statusmsg)) echo $statusmsg; ?>&nbsp;</font></h1>
         <div style="color:red;"><?php echo $errormsg; ?></div><br/>
@@ -152,7 +161,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
         </form>
     </div>
 
-    <!--ACCOUNT FORM CONTAINER-->	
+    <!--ACCOUNT FORM CONTAINER-->
 
     <!--MAP CONTAINER-->
     <div id="right_float_cont">
@@ -167,38 +176,38 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
     <script type="text/javascript">
         $(function() {
             //account code
-            if($("#update_form").length){   
+            if($("#update_form").length){
                 $.validator.addMethod("monthTest", function(value, element, param) {
                     return this.optional(element) || /^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/.test( value );
                 }, "* Invalid Date");
-		
+
                 //Update validation
                 var validateUpdateAccount = $("#update_form").validate({
                     rules: {
                         update_name: {
-                            required: true, 
+                            required: true,
                             notEqual: "First Name"
                         },
                         update_lastname : {
-                            required: true, 
+                            required: true,
                             notEqual: "Last Name"
                         },
                         update_phone    : {
                             NumbersOnly:true,
-                            minlength: 8, 
-                            maxlength: 13,                         
-                            required: true, 
+                            minlength: 8,
+                            maxlength: 13,
+                            required: true,
                             notEqual: "Phone"
                         },
                         update_email    : {
-                            required: true, 
+                            required: true,
                             email: true
                         },
                         update_dob      : {
                             required: true
                         },
                         update_address  : {
-                            //required: true, 
+                            //required: true,
                             notEqual: "Address"
                         }
                     },
@@ -213,7 +222,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                         update_address   : ""
                     }
                 });
-		              
+
 
                 $('#update_dob').datepicker({
                     changeMonth: true,
@@ -223,19 +232,25 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                         $('#update_dob').removeClass('error');
                     },
                     dateFormat        : "dd/mm/yy",
-                    constrainInput    : true  
-                });                               
-               
+                    constrainInput    : true
+                });
+
                 autocomplete_getLocation("#update_address",'#update_address_obj',10,false);
-                
+
                 $('#update_address').change(function(){
-                    var address = $(this).val();                  
+                    var address = $(this).val();
                     if(address === ''){
                         $('#update_address_obj').val('');
                         $('#update_address_obj').data("location",'');
                     }
                 });
-            
+
+                // Remove the notification of updated data notification message
+                setTimeout(function(){
+                    $('#updated_data_message').fadeOut(1000, function(){
+                        $("updated_data_message").hide();
+                    });
+                },3000);
             }
             // Handler for .ready() called.
         });
