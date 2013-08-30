@@ -12,10 +12,10 @@
  */
 class Account {
     /*
-     * create() 
-     * Creates new passenger's account and does sign in after that 
+     * create()
+     * Creates new passenger's account and does sign in after that
      * @param (object) TDispatch object
-     * @param (array) passenger information  
+     * @param (array) passenger information
      * @return (object) json object
      */
     public function create(TDispatch $td, $passenger = array()) {
@@ -67,9 +67,9 @@ class Account {
     /*
      * getPreferences()
      *
-     * Returns object with account preferences 
-     * @param (object) TDispatch object    
-     * @return (object) json object    
+     * Returns object with account preferences
+     * @param (object) TDispatch object
+     * @return (object) json object
      * return example:
      * {
       "preferences": {
@@ -131,11 +131,11 @@ class Account {
     /*
      * setPreferences
      *
-     * Returns object with account preferences 
+     * Returns object with account preferences
      * @param (object) TDispatch object
      * @param (array) preferences
      * example:
-     * 
+     *
       {
       "birth_date": "1985-10-21T00:00:00",
       "email": "eugen@tdispatch.com",
@@ -155,7 +155,7 @@ class Account {
       "use_account_location_as_pickup": true,
       "username": "eugen-ivanov"
       }
-     * @return (object) json object    
+     * @return (object) json object
      * return example:
      * {
       "preferences": {
@@ -208,6 +208,40 @@ class Account {
         return json_decode($result, true);
     }
 
+    public function getFleetTime(TDispatch $td) {
+        $data = array(
+            "access_token" => $td->getToken()
+        );
+        //TD url
+        $url = $td->getFullApiUrl() . 'fleet/time?' . http_build_query($data);
+        //Open connection
+
+        $ch = curl_init();
+
+        //Set the url, Number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        //Execute post
+        $result = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        //Close connection
+        curl_close($ch);
+
+        // Get the time
+        $full_time = json_decode($result, true)['time'];
+
+        $parsed_time = array(
+            "fulltime" => $full_time,
+            "hour" => date_format(date_create($full_time), "H"),
+            "minutes" => date_format(date_create($full_time), "i"),
+            "date" => date_format(date_create($full_time), "d/m/Y")
+        );
+
+        return $parsed_time;
+    }
+
     public function getFleetdata(TDispatch $td) {
         $data = array(
             "access_token" => $td->getToken()
@@ -253,7 +287,7 @@ class Account {
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataSend));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
+
         if($td->debug){
             error_log(__FILE__.' in line '.__LINE__);
             error_log(__CLASS__.' in method '.__METHOD__);
@@ -270,7 +304,7 @@ class Account {
         //Decode jsonresponse
         return json_decode($result, true);
     }
-    
+
      public function changePassword(TDispatch $td, $requestBody) {
         $data = array(
             "key" => $td->getApiKey()
@@ -284,11 +318,11 @@ class Account {
         //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
-        
+
         curl_setopt($ch, CURLOPT_POST, count($requestBody));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($requestBody));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
+
         if($td->debug){
             error_log(__FILE__.' in line '.__LINE__);
             error_log(__CLASS__.' in method '.__METHOD__);
@@ -298,7 +332,7 @@ class Account {
 
         //Execute post
         $result = curl_exec($ch);
-        $res = json_decode($result, true);       
+        $res = json_decode($result, true);
         $info = curl_getinfo($ch);
         //Close connection
         curl_close($ch);
