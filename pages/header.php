@@ -100,8 +100,8 @@ if (isset($form_resp)) {
         <!--MAIN NAV-->
         <ul id="head_nav">
             <li><a class="<?php echo ((isset($page) && $page === 'home') ? "active" : ''); ?>" href="/">Book a taxi</a></li>
-            <li><a href="iphoneapp">iPhone app</a></li>
-            <li ><a href="aboutus">About us</a></li>
+            <li><a href="mobile">Mobile apps</a></li>
+            <li ><a href="about">About us</a></li>
             <?php if (isset($loggedin) && $loggedin): ?>
                 <li><a class="<?php echo ((isset($page) && $page === 'bookings') ? "active" : ''); ?>" href="bookings">Your bookings</a></li>
                 <li class="last"><a class="<?php echo ((isset($page) && $page === 'account') ? "active" : ''); ?>" href="account">Your account</a></li>

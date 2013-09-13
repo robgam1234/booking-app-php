@@ -2,7 +2,7 @@
     <div id="book_forms_cont">
         <!--Location/Destination container-->
         <div id="addresses_cont" class="box-container">
-            <h2>iPhone App</h2>
+            <h2>Our Mobile Passenger Apps are here!</h2>
             <div class="location-block">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
