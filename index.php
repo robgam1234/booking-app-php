@@ -25,10 +25,10 @@ session_start();
 define('INDEX_CALL', 1);
 
 if (isset($_POST['JSON'])) {
-    include 'requestJSON.php';
+    include 'inc/request_json.php';
     exit;
 }
-require_once 'inc/tdispatch/TDispatch.php';
+require_once 'inc/tdispatch/tdispatch.php';
 $td = new TDispatch();
 
 $page = 'home';
@@ -41,8 +41,47 @@ include 'pages/header.php';
 $header = ob_get_clean();
 
 ob_start();
-include 'requestmanager.php';
+
+switch ($page) {
+    case 'home':
+        include 'pages/home.php';
+        break;
+    case 'aboutus':
+        include 'pages/about_us.php';
+        break;
+    case 'iphoneapp':
+        include 'pages/iphone_app.php';
+        break;
+    case 'booking':
+        include 'pages/home.php';
+        break;
+    case 'account':
+        include 'pages/account.php';
+        break;
+    case 'reset-password':
+        include 'pages/reset_password.php';
+        break;
+    case 'change-password':
+        include 'pages/change_password.php';
+        break;
+    case 'bookings':
+        include 'pages/bookings.php';
+        break;
+    case 'logout':
+        include 'pages/logout.php';
+        break;
+    case 'tracking':
+        include 'pages/tracking.php';
+        break;
+    case 'receipt':
+        include 'pages/receipt.php';
+        break;
+    default:
+        include 'pages/home.php';
+        break;
+}
 $content = ob_get_clean();
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
