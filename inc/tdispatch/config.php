@@ -29,11 +29,12 @@ class Config {
 
 
 
+
 	// ************* NO NEED TO TOUCH ANY CODE BELOW THIS LINE **************************/
 
-	private static $apiBaseUrl 	= 'https://api.tdispatch.com/';
+	private static $apiBaseUrl 					= 'https://api.tdispatch.com/';
 	private static $resetPasswordCallbackPage = 'reset-password';
-	private static $debug = true;
+	private static $debug 							= true;
 
 	public static function validateConfig() {
 		if( self::$fleetApiKey === null ) {
@@ -48,42 +49,25 @@ class Config {
 	}
 
 	public static function getFleetApiKey() {
-		return self::fleetApiKey;
+		return self::$fleetApiKey;
 	}
 	public static function getApiClientId() {
-		return self::apiClientId;
+		return self::$apiClientId;
 	}
 	public static function getApiSecret() {
-		return self::apiSecret;
+		return self::$apiSecret;
 	}
 	public static function getHomeUrl() {
-		return self::homeUrl;
+		return self::$homeUrl;
 	}
 	public static function getApiBaseUrl() {
-		return self::apiBaseUrl;
+		return self::$apiBaseUrl;
 	}
 	public static function getResetPasswordCallbackPage() {
-		return self::getResetPasswordCallbackPage;
+		return self::$resetPasswordCallbackPage;
 	}
 	public static function isDebug() {
-		return self::debug;
+		return self::$debug;
 	}
 
 }
-
-
-
-
-
-/* global $apiConfig;
-$apiConfig = array(
-    'baseURL'=>'https://api.tdispatch.com/', // http://api.t-dispatch.co for develop and tests, https://api.tdispatch.com for production
-    'apiPassengerVersion' => 'v1', //Version of Passenger-API
-    'api_key'=>'', //API Key supplied by the Fleet
-    'api_cliente_id'=>'xxxxxxxxxx@tdispatch.com', //cliend_id@tdispatch.com - must always have @tdispatch.com
-    'api_secret'=>'', //the Client Secret given by TDispatch support
-    'getHomeUrl'=>'http://yourwebsite.com/', //Your website url
-    'resetPasswordCallbackPage'=>'reset-password', //Callback page for reset-password reset-password.php
-    'debug'=>true //(bool) true or false, if you want errors in error_log
-);
- */
