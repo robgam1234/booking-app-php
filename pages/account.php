@@ -195,7 +195,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                         update_phone    : {
                             NumbersOnly:true,
                             minlength: 8,
-                            maxlength: 13,
+                            maxlength: 15,
                             required: true,
                             notEqual: "Phone"
                         },

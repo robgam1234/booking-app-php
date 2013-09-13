@@ -67,11 +67,18 @@ switch ($type) {
     case 'getquotes':
         $pickupLocation = json_decode(stripslashes($_POST["locationobj"]), true);
         $dropoffLocation = json_decode(stripslashes($_POST["destinationobj"]), true);
+
+        $pickup_postcode = $pickupLocation["postcode"];
+        $dropoff_postcode = $dropoffLocation["postcode"];
         $pickup_location = array("lat" => $pickupLocation["location"]["lat"], "lng" => $pickupLocation["location"]["lng"]);
         $dropoff_location = array("lat" => $dropoffLocation["location"]["lat"], "lng" => $dropoffLocation["location"]["lng"]);
-        $fare_calculation = $td->FareCalculation_fare($pickup_location, $dropoff_location/* ,$waypoints */);
+        $fare_calculation = $td->FareCalculation_fare($pickup_postcode, $dropoff_postcode, $pickup_location, $dropoff_location/* ,$waypoints */);
+
         if ($fare_calculation) {
             $response = $fare_calculation;
+
+            $response['pickup_postcode'] = $pickupLocation["postcode"];
+            $response['dropoff_postcode'] = $dropoffLocation["postcode"];
             $response['pickup_location']['lat'] = $pickupLocation["location"]["lat"];
             $response['pickup_location']['lng'] = $pickupLocation["location"]["lng"];
             $response['dropoff_location']['lat'] = $dropoffLocation["location"]["lat"];

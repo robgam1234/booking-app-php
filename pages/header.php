@@ -393,7 +393,7 @@ if (isset($form_resp)) {
                     regphone    : {
                         NumbersOnly:true,
                         minlength: 8, 
-                        maxlength: 13, 
+                        maxlength: 15, 
                         required: true, 
                         notEqual: "Your phone number"
                     },
