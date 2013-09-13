@@ -1,38 +1,10 @@
 TDispatch Library for PHP
 =====================================
 
-== Description
-The TDispatch Library enables you to work with TDISPATCH API on your server.
-
-Requirements:
-  PHP 5.2.x or higher [http://www.php.net/]
-  PHP Curl extension [http://www.php.net/manual/en/intro.curl.php]
-  PHP JSON extension [http://php.net/manual/en/book.json.php]
-
-Project page:
-  https://github.com/TDispatch/Passenger-API
-
-Report a defect or feature request here:
-  https://github.com/TDispatch/Passenger-API/issues
-
-
-== What you need to configure?
-You only need to configure vars in this file "tdispatch_config.php"
-
-$apiConfig = array(
-    'baseURL'=>'http://api.t-dispatch.co/', // http://api.t-dispatch.co for develop and tests, https://api.tdispatch.com for production 
-    'apiPassengerVersion' => 'v1', //Version of Passenger-API
-    'api_key'=>'', //API Key supplied by the Fleet 
-    'api_cliente_id'=>'',//the Client ID given by TDispatch support (Note: Client ID is always something like “LLNgW9FfJP@tdispatch.com” (10 characters + @tdispatch.com))
-    'api_secret'=>'', //the Client Secret given by TDispatch support
-    'getHomeUrl'=>'', //Your website url (http://yoursite.com/)
-    'resetPasswordCallbackPage'=>'reset-password', //Callback page for reset-password (reset-password.php)
-    'debug'=>true //(bool) true or false, if you want errors in error_log
-);
-
 == Basic Example for usage
+
   <?php
-    require_once 'path/to/src/tdispatch/TDispatch.php';
+    require_once 'path/to/src/tdispatch/tdispatch.php';
     $tdispatch = new TDispatch();
 
 == List Methods for $tdispatch you can use, the explain in the bottom (check topic: == Details for each method )
@@ -121,7 +93,7 @@ $tdispatch->api_info();
 /* Account_create()
 * Creates new passenger's account and does sign in after that
 * @param (array) passenger information
-* example:      
+* example:
     $passenger = array(
         "first_name"=> "James",
         "last_name"=>  "Moriarty",
@@ -138,15 +110,15 @@ $tdispatch->api_info();
         },
         "status": "OK",//
         "status_code": 200 //
-    }     
+    }
 */
 //example
 $tdispatch->Account_create($passenger);
 
 
 
-/* 
-* Account_login()  
+/*
+* Account_login()
 * o login for user
 * @param $user email for user
 * @param $password password for user
@@ -155,18 +127,18 @@ $tdispatch->Account_create($passenger);
 //example
 $tdispatch->Account_login($user, $password);
 
-/* 
-* Account_logout()  
-* do logout and unset all session vars   
+/*
+* Account_logout()
+* do logout and unset all session vars
 */
 //example
 $tdispatch->Account_logout();
-    
+
 
 /*
 * Account_getPreferences()
-* Returns object with account preferences 
-* @return (object) json object    
+* Returns object with account preferences
+* @return (object) json object
 * return example:
 {
     "preferences": {
@@ -198,10 +170,10 @@ $tdispatch->Account_getPreferences();
 
 /*
 * Account_setPreferences()
-* Returns object with new account preferences 
+* Returns object with new account preferences
 * @param $preferences (array) with new preferences
-example: 
-$preferences = array(   
+example:
+$preferences = array(
     "birth_date"=> "1985-10-21T00:00:00",
     "email"=> "eugen@tdispatch.com",
     "first_name"=> "Eugen",
@@ -219,7 +191,7 @@ $preferences = array(
     "receive_sms_notifications"=> true,
     "use_account_location_as_pickup"=> true
 );
-* @return (object) json object    
+* @return (object) json object
 * return example:
 {
     "preferences": {
@@ -251,9 +223,9 @@ $tdispatch->Account_setPreferences($preferences);
 
 /*
 * Account_getFleetdata()
-* Returns account's office data 
-* @return (object) json object    
-* return example:  
+* Returns account's office data
+* @return (object) json object
+* return example:
 {
     "data": {
         "phone": "+612073811124",
@@ -265,7 +237,7 @@ $tdispatch->Account_setPreferences($preferences);
 }
 */
 //example
-$tdispatch->Account_getFleetdata(); 
+$tdispatch->Account_getFleetdata();
 
 
 /*
@@ -276,32 +248,32 @@ $tdispatch->Account_getFleetdata();
 * @return (bool) true or false
 */
 //example
-$tdispatch->Account_resetPassword($email); 
+$tdispatch->Account_resetPassword($email);
 
 
 /*
 * Account_changePassword()
-* Method to change password after reseting 
+* Method to change password after reseting
 * @param $data (array) with token and new password.
 example:
 $data = array(
     'token'=>"3il-8f837e891b40dbccbe0f", //Reset password token. Can be obtained from confirm_url when user clicks it from the password reset
     'new_password'=> "n1ce_nevv_pa$$word"
 );
-* @return (bool) true or false    
+* @return (bool) true or false
 */
 //example
-$tdispatch->Account_changePassword($data); 
+$tdispatch->Account_changePassword($data);
 
 
 
 /*
 * Account_checkLogin()
 * Method to check if user is authenticated
-* @return (bool) true or false    
+* @return (bool) true or false
 */
 //example
-$tdispatch->Account_checkLogin(); 
+$tdispatch->Account_checkLogin();
 
 /* END - ACCOUNT FUNCTIONS */
 
@@ -348,7 +320,7 @@ example:
 }
 */
 //example
-$tdispatch->Location_search($q,$limit,$type ); 
+$tdispatch->Location_search($q,$limit,$type );
 /* END - LOCATION FUNCTIONS */
 
 
@@ -381,14 +353,14 @@ example:
 }
 */
 //example
-$tdispatch->FareCalculation_fare($pickup, $dropoff, $waypoints); 
+$tdispatch->FareCalculation_fare($pickup, $dropoff, $waypoints);
 /* END - FareCalculation FUNCTIONS */
 
 /* BOOKINGS FUNCTIONS */
 /*
 * Bookings_list()
 * Returns list with bookings of that passenger, according to given parameters
-* @param $order_by Fields to order by, separated by commas. For descending order, put a minus sign before the field name. 
+* @param $order_by Fields to order by, separated by commas. For descending order, put a minus sign before the field name.
 * Possible fields to order by:
     -pickup_time
     -dropoff_time
@@ -405,7 +377,7 @@ $tdispatch->FareCalculation_fare($pickup, $dropoff, $waypoints);
     -keywords
     -minutes_waited
 * @param $status
-* Possible fields to status: 
+* Possible fields to status:
     -quoting
     -incoming
     -from_partner
@@ -417,7 +389,7 @@ $tdispatch->FareCalculation_fare($pickup, $dropoff, $waypoints);
     -cancelled
     -draft
     Few statuses possible, if separated by comma
-* @param $pickup_time (string (ISO format)) Show only bookings with a specified pickup time 
+* @param $pickup_time (string (ISO format)) Show only bookings with a specified pickup time
 * @param $limit (int) Limit number of bookings
 * @param $offset (int) Use with limit parameter to get paged bookings; get {limit} bookings from {offset}. Default is 0
 * @return (object) json object (list of bookings)
@@ -488,7 +460,7 @@ example:
         "value": 7.7
     },
     "vehicle_type": {
-        "pk": "5093aff36e77c305510003a5", 
+        "pk": "5093aff36e77c305510003a5",
         "name": "Coupe"
     },
     "way_points": [ {
@@ -565,7 +537,7 @@ example:
         "value": 7.7
     },
     "vehicle_type": {
-        "pk": "5093aff36e77c305510003a5", 
+        "pk": "5093aff36e77c305510003a5",
         "name": "Coupe"
     },
     "way_points": [ {
@@ -589,32 +561,32 @@ $tdispatch->Bookings_list($order_by,$status,$pickup_time,$limit,$offset);
 
 /*
 * Bookings_create()
-* Creates a new Booking in Draft or Incoming status. 
+* Creates a new Booking in Draft or Incoming status.
 * Returns the created booking, according to given parameters
-* @param $customer 
+* @param $customer
 example: $customer= array(
     'name' => 'Vincent vvan Gogh',
     'phone' => '+49234654967'
 );
-* @param $passenger 
+* @param $passenger
 example:  $passenger = array(
     'name' => 'Pablo Picasso',
     'phone' => '+49123470416',
     'email' => 'pablo@tdispatch.com'
 );
-* @param $pickup_time  Timestamp for pickup time 
+* @param $pickup_time  Timestamp for pickup time
 * @param $return_pickup_time Optional timestamp for returning booking pickup time
-* @param $pickup_location 
+* @param $pickup_location
 example: = $pickup_location = array(
     'address' => 'Grüntaler strasse 11 13357',
     'postcode' => '13357',
     'door_number' => '15',
-    'location' => array(        
+    'location' => array(
         'lat' => '52.552037',
         'lng' => '13.387291'
     )
 );
-* @param $way_points 
+* @param $way_points
 example: $way_points = array(
     '0' => array(
         'address' => '',
@@ -626,7 +598,7 @@ example: $way_points = array(
         )
     )
 );
-* @param $dropoff_location 
+* @param $dropoff_location
 example $dropoff_location = array(
     'address' => '11 Bramblefield Close DA3 7RT',
     'postcode' => 'DA3 7QA',
@@ -635,7 +607,7 @@ example $dropoff_location = array(
         'lat' => '51.3963894991',
         'lng' => '0.3007067293'
     )
-); 
+);
 * @param $vehicle_type Vehicle's type unique ID
 * @param $extra_instructions Passenger's extra instructions
 * @param $luggage Amount of luggage going to be in the car
@@ -670,7 +642,7 @@ $tdispatch->Bookings_create($customer, $passenger, $pickup_time, $return_pickup_
 /*
 * Bookings_get()
 * Return information about a specific booking
-* @param $bookingPk 
+* @param $bookingPk
 * @return (object) json object (booking)
 example:
 {
@@ -740,7 +712,7 @@ example:
             "value": 11.55
         },
         "vehicle_type": {
-            "pk": "5093aff36e77c305510003a5", 
+            "pk": "5093aff36e77c305510003a5",
             "name": "Coupe"
         },
         "way_points": [
@@ -814,7 +786,7 @@ $tdispatch->Bookings_receipt($bookingPk);
 /*
 * Bookings_tracking()
 * Tracking of booking
-* @param $bookings (array) 
+* @param $bookings (array)
 example: array($pk1, $pk2,$pkn);
 * @return (object) json object
 example:
