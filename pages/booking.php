@@ -345,17 +345,21 @@ if (!!$customFieldsForm) {
                     $checked_v = ' checked ';
                 }
 
-                $v_temp = $vehicles_website[$v_temp_name];
+//                $v_temp = $vehicles_website[$v_temp_name];
+//                $radios_vehicles .='<input type="radio" ' . $checked_v . ' name="vehicle_type" id="vehicle_type_' . $v_temp_key . '" value="' . $v_temp_key . '" />';
+//                $select_vehicles .='<div class="vehicle_box_cont ' . $active_v . '" max_passengers="' . $v_temp['max_passengers'] . '" max_bag="' . $v_temp['max_bags'] . '">
+//                                            <div class="vehicle_box_outer">
+//                                                <div class="vehicle_box_inner">
+//                                                    <div class="carcont"><span class="' . $v_temp['class_image'] . '">&nbsp;</span></div>
+//                                                    <label>' . $v_temp['type'] . '</label><span class="passengers_info">' . $v_temp['info'] . '</span>
+//                                                    <span class="' . $v_temp['class_bags_img'] . '">&nbsp;</span>
+//                                                </div>
+//                                            </div>
+//                                        </div>';
+
                 $radios_vehicles .='<input type="radio" ' . $checked_v . ' name="vehicle_type" id="vehicle_type_' . $v_temp_key . '" value="' . $v_temp_key . '" />';
-                $select_vehicles .='<div class="vehicle_box_cont ' . $active_v . '" max_passengers="' . $v_temp['max_passengers'] . '" max_bag="' . $v_temp['max_bags'] . '">
-                                            <div class="vehicle_box_outer">
-                                                <div class="vehicle_box_inner">
-                                                    <div class="carcont"><span class="' . $v_temp['class_image'] . '">&nbsp;</span></div>
-                                                    <label>' . $v_temp['type'] . '</label><span class="passengers_info">' . $v_temp['info'] . '</span>
-                                                    <span class="' . $v_temp['class_bags_img'] . '">&nbsp;</span>
-                                                </div>
-                                            </div>
-                                        </div>';
+                $select_vehicles .='<div class="vehicle_box_cont ' . $active_v . '">' . $v_temp_name . '</div>';
+
                 $checked_v = '';
                 $active_v = '';
             }

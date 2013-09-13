@@ -20,6 +20,10 @@
 */
 
 
+require_once('inc/tdispatch/config.php');
+Config::validateConfig();
+
+
 ob_start();
 session_start();
 define('INDEX_CALL', 1);
@@ -46,11 +50,11 @@ switch ($page) {
     case 'home':
         include 'pages/home.php';
         break;
-    case 'aboutus':
-        include 'pages/about_us.php';
+    case 'about':
+        include 'pages/about.php';
         break;
-    case 'iphoneapp':
-        include 'pages/iphone_app.php';
+    case 'mobile':
+        include 'pages/mobile.php';
         break;
     case 'booking':
         include 'pages/home.php';

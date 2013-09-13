@@ -19,7 +19,6 @@
  ******************************************************************************
 */
 
-//This is important, cause we use session vars
 if (!isset($_SESSION)) {
     @session_start();
 }
@@ -58,53 +57,44 @@ require_once 'fare_calculation.php';
 require_once 'vehicles.php';
 require_once 'drivers.php';
 
-/**
- * Description of TDispatch
- *
- * @author Punchline
- */
-require_once 'tdispatch_config.php';
+require_once 'config.php';
 
 class TDispatch {
 
-    public $api_key;
-    public $api_cliente_id;
-    public $api_secret;
-    public $getHomeUrl;
-    public $debug;
-    public $resetPasswordCallbackPage;
-    public $baseURL;
-    public $oauthURL = 'passenger/oauth2/';
-    public $apiURL;
-    public $oauth;
-    public $booking;
-    public $accounts;
-    public $location;
-    public $fareCalculation;
-    public $vehicles;
-    public $drivers;
-    public $api;
-    public $lastErrorMsg;
-    public $lastErrorCode;
+    protected $api_key;
+    protected $api_cliente_id;
+    protected $api_secret;
+    protected $getHomeUrl;
+    protected $debug;
+    protected $resetPasswordCallbackPage;
+    protected $baseURL;
+    protected $oauthURL = 'passenger/oauth2/';
+    protected $oauth;
+    protected $booking;
+    protected $accounts;
+    protected $location;
+    protected $fareCalculation;
+    protected $vehicles;
+    protected $drivers;
+    protected $api;
+    protected $lastErrorMsg;
+    protected $lastErrorCode;
 
     /* API FUNCTIONS */
-    function __construct($config = array()) {
-        global $apiConfig;
-        $apiConfig = array_merge($apiConfig, $config);
-        $this->api_key = $apiConfig['api_key'];
-        $this->api_cliente_id = $apiConfig['api_cliente_id'];
-        $this->api_secret = $apiConfig['api_secret'];
+    function __construct() {
 
-        $this->getHomeUrl = $apiConfig['getHomeUrl'];
-        $this->debug = $apiConfig['debug'];
-        $this->resetPasswordCallbackPage = $apiConfig['resetPasswordCallbackPage'];
+        $apiConfig = array();
+        $this->api_key = Config::getFleetApiKey();
+        $this->api_cliente_id = Config::getApiClientId();
+        $this->api_secret = Config::getApiSecret();
 
-        $this->baseURL = $apiConfig['baseURL'];
-        $this->apiURL = 'passenger/' . $apiConfig['apiPassengerVersion'] . '/';
+        $this->getHomeUrl = Config::getHomeUrl();
+        $this->debug = Config::isDebug();
+        $this->resetPasswordCallbackPage = Config::getResetPasswordCallbackPage();
 
+        $this->baseURL = Config::getApiBaseUrl();
 
-        $oauth = new OAuth($this,$this->api_key, $this->api_cliente_id, $this->api_secret);
-        $this->oauth = $oauth;
+        $this->oauth = new OAuth($this, $this->api_key, $this->api_cliente_id, $this->api_secret);
         $this->booking = new Bookings;
         $this->accounts = new Account;
         $this->location = new LocationSearch;
@@ -128,7 +118,7 @@ class TDispatch {
     }
 
     public function getFullApiUrl() {
-        return $this->baseURL . $this->apiURL;
+        return $this->baseURL . 'passenger/v1/';
     }
 
     public function getFullOAuthUrl() {

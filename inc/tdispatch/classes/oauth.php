@@ -38,10 +38,10 @@ class OAuth {
 
     public function getAccessToken(TDispatch $td) {
         //If is the first time or not have session, do authenticate anonimously
-        if(!isset($_SESSION['TDISPATCH']))
+        if(!isset($_SESSION['TDISPATCH'])) {
             $this->obtainAutorizationCode($td);
+        }
 
-        //
         if (isset($_SESSION['TDISPATCH']['access']["access_token"])) {
             return $_SESSION['TDISPATCH']['access']["access_token"];
         }
