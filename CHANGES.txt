@@ -1,0 +1,5 @@
+v1.1 (2013.09.13)
+-----------------
+- lowercased all filenames
+- cleaned and simplified the code
+- reorganized project structure
