@@ -9,6 +9,12 @@ $error_msg_booking = '';
 $booking_resp = array();
 $customFieldsForm = $td->Bookings_getCustom();
 
+//
+$office_time = $td->Account_getFleetTime();
+$office_hour = $office_time['hour'];
+$office_minutes = $office_time['minutes'];
+$office_date = $office_time['date'];
+
 if (isset($_POST['booking_form_type'])) {
     $_SESSION['post_booking'] = $_POST;
     switch ($_POST['booking_form_type']) {
@@ -167,7 +173,6 @@ if (isset($_POST['booking_form_type'])) {
                 $booking_resp['hours[1]'] = substr($hourTemp, 1, 1);
                 $booking_resp['minutes[0]'] = substr($minuteTemp, 0, 1);
                 $booking_resp['minutes[1]'] = substr($minuteTemp, 1, 1);
-
                 $booking_resp['date'] = sprintf("%02s/%02s/%04s", $bk_date['day'], $bk_date['month'], $bk_date['year']);
 
                 $booking_resp['locationobj'] = json_encode($bk_resp['pickup_location'], true);
@@ -240,10 +245,9 @@ if (!!$customFieldsForm) {
     $fields = '' . $fields . '';
 }
 
-
 ?>
 <form id="booking_form" name="booking_form" class="booking_form journey_form" method="post" autocomplete="off" action="/booking" >
-    <input type="hidden" name="booking_form_type" value="<?php echo $booking_form_type; ?>" /> 
+    <input type="hidden" name="booking_form_type" value="<?php echo $booking_form_type; ?>" />
     <?php if (valueReturnBooking('bookingPk') != '') : ?>
         <input type = "hidden" name = "bookingPk" value = "<?php echo valueReturnBooking('bookingPk'); ?>" />
 <?php endif; ?>
@@ -290,7 +294,7 @@ if (!!$customFieldsForm) {
             </div>
         -->
             <?php echo $fields; ?>
-    
+
         </div>
         <!--Location/Destination container-->
 
@@ -339,7 +343,7 @@ if (!!$customFieldsForm) {
                 <p class="subtitle">Select a vehicle to suit your requirements from the options below.</p>
                 <div class="vehicle_boxes">
     <?php echo $select_vehicles; ?>
-                </div>				 
+                </div>
             </div>
 <?php } ?>
         <!--Vehicle select container-->
@@ -365,7 +369,7 @@ if (!!$customFieldsForm) {
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo valueReturnBooking('hours[1]'); ?>"  />
+                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo valueReturnBooking('hours[1]') ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="splitblock" >:</div>
@@ -392,7 +396,7 @@ if (!!$customFieldsForm) {
             <a href="javascript:void(0);" class="close" title="Hide"></a>
             <h2>Notes</h2>
             <p class="subtitle">Please provide the driver with any additonal information they may require for your journey.</p>
-            <textarea rows="4" cols="50" name="extra_instructions" id="extra_instructions"><?php echo valueReturnBooking('extra_instructions'); ?></textarea> 
+            <textarea rows="4" cols="50" name="extra_instructions" id="extra_instructions"><?php echo valueReturnBooking('extra_instructions'); ?></textarea>
         </div>
     </div>
     <!--ALL BOOKING FORMS CONTAINER-->
@@ -431,13 +435,13 @@ if (!!$customFieldsForm) {
     <!--MAP CONTAINER-->
 </form>
 <script>
-    $(function(){   
-        
-        //passengers 
+    $(function(){
+
+        //passengers
         $(".qt_bags_pass a").click(function(){
             var $parent = $(this).parent();
             var $input = $(this).parent().find("input"), index = $(".qt_bags_pass").index($(this).parent());
-            
+
             switch(index){
                 case 0:
                     var range = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
@@ -446,42 +450,42 @@ if (!!$customFieldsForm) {
                     var range = [0,1,2,3,4,5,6,7,8,9];
                     break;
 
-            }	
+            }
             var val = parseInt($input.val()) + (($(this).hasClass("add")) ? 1 : -1);
             if($.inArray(val, range) != -1)
                 $input.val(val).trigger("change");
-        });	
+        });
         jQuery("input.numberOnlyBooking").change(function(){
             var max = $(this).attr('max');
             var min = $(this).attr('min');
 
             if($(this).val()> parseInt(max)) $(this).val(max)
             if($(this).val()< parseInt(min)) $(this).val(min)
-        }).keydown(function(event) {                  
-            if ( event.shiftKey|| (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 ) && event.keyCode != 8 && event.keyCode != 9 ) 
+        }).keydown(function(event) {
+            if ( event.shiftKey|| (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 ) && event.keyCode != 8 && event.keyCode != 9 )
             {
-                event.preventDefault(); 
-            }               
-        }).keyup(function(event) { 
+                event.preventDefault();
+            }
+        }).keyup(function(event) {
             var min = $(this).attr('min');
             if($(this).val() == '')
-                $(this).val(min);                 
+                $(this).val(min);
         });
-        
+
         $('#show-time').click(function(){
             $(this).parent().fadeOut(animationTime,function(){
-                $('#date_cont').fadeIn(animationTime);	
+                $('#date_cont').fadeIn(animationTime);
             });
         });
 
         $('#add-notes').click(function(){
             $(this).parent().fadeOut(animationTime,function(){
-                $('#notes_cont').fadeIn(animationTime);	
+                $('#notes_cont').fadeIn(animationTime);
             });
         });
-        
-        
-        
+
+
+
         $("#booking_form").submit(function(){
             var erros = 0;
             if($('#passengers').val() < 1 || $('#passengers').val() >20){
@@ -494,15 +498,15 @@ if (!!$customFieldsForm) {
             }
             return (erros > 0)?false:true;
         });
-        
+
         var doSearch = 0; //Prevent fast requests
-       
+
         var refreshInfoMap = function(){
             var $thisObj = $("input[type=hidden]");
             var emptyFields = $thisObj.filter(function() {
                 return $.trim(this.value) === "";
             });
-			
+
             if (!emptyFields.length){
                 if( FieldValid($("#date"),"blank","Plese specify your pickup date") ){
                     //All destinations are set and date is not blank
@@ -516,8 +520,8 @@ if (!!$customFieldsForm) {
                     $("#date").focus();
                 }
             }
-        } 
-        
+        }
+
         autocomplete_getLocation("#journey_location",'#journey_location_obj',10,true,refreshInfoMap);
         autocomplete_getLocation("#journey_destination",'#journey_destination_obj',10,false,refreshInfoMap);
 
@@ -528,14 +532,14 @@ if (!!$customFieldsForm) {
             var data = $(".booking_form").serializeArray();
             if(data[data.length-1].value == "Type your message to the driver here" || data[data.length-1].value == "" ) data.pop();
             data.push({
-                name: "JSON", 
+                name: "JSON",
                 value: true
             });
             data.push({
-                name: "TYPE", 
+                name: "TYPE",
                 value: "getquotes"
             });
-           
+
             //Do quote request
             $.post("/",data,function(data){
                 $("#right_ad").fadeOut(function(){
@@ -547,33 +551,33 @@ if (!!$customFieldsForm) {
             });
         }
 
-        //Draw map function	
+        //Draw map function
         function drawMap(data){
-            
+
             if(data.status_code == 200){
                 //Display cost, destination
                 $(".journey_map_info .map_info_txt:eq(0) label").html(data.fare.distance.miles+'miles / '+data.fare.distance.km+' km');
                 $(".journey_map_info .map_info_txt:eq(1) label").html(data.fare.formatted_total_cost);
                 $(".journey_map_info .map_info_txt:eq(2) label").html(data.fare.time_to_wait); //NOTE: Check for arrive time
-				
+
                 //Setup map directions
                 var directionsDisplay;
                 var directionsService = new google.maps.DirectionsService();
                 var routeMap, stepDisplay;
-					
+
                 //Setup directions
                 directionsDisplay = new google.maps.DirectionsRenderer({
                     suppressMarkers: true
                 });
-					
+
                 // Instantiate an info window
                 stepDisplay = new google.maps.InfoWindow();
-				
+
                 //Get start position and put it in local variables
                 var lat = data.pickup_location.lat;
                 var lng = data.pickup_location.lng;
                 var setupLocation = new google.maps.LatLng(lat,lng);
-			
+
                 //Setup google maps for first time
                 var mapOptions = {
                     center: setupLocation,
@@ -582,15 +586,15 @@ if (!!$customFieldsForm) {
                 };
                 routeMap = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
                 directionsDisplay.setMap(routeMap);
-		
+
                 //Set up start location
                 var startpoint = new google.maps.LatLng(lat,lng);
-	
+
                 //End location
                 lat = data.dropoff_location.lat;
                 lng = data.dropoff_location.lng;
                 var endpoint = new google.maps.LatLng(lat,lng);
-		
+
 
                 //Icons
                 var icons = {
@@ -627,9 +631,9 @@ if (!!$customFieldsForm) {
                 //Place markers
                 function makeMarker( position, icon, title ) {
                     var marker = new google.maps.Marker({
-                        position: position, 
-                        map: routeMap, 
-                        icon: icon, 
+                        position: position,
+                        map: routeMap,
+                        icon: icon,
                         title: title
                     });
                     google.maps.event.addListener(marker, 'click', function() {
@@ -640,13 +644,13 @@ if (!!$customFieldsForm) {
             }else{
                 $("input.book_btn[type=submit]").addClass("book_btn_desabled").removeClass("book_btn_login");
                 $(".login_title_error font").text("");
-                var returnMessage = (data.message.text.lenght > 0) ? data.message.text : "You have selected the same location twice"; 
+                var returnMessage = (data.message.text.lenght > 0) ? data.message.text : "You have selected the same location twice";
                 $("#map_canvas").html("<p class='error'>"+returnMessage+"</p>");
                 $(".journey_map_info .map_info_txt b").html("");
             }
         }
-        
-        //Get quote validation function	
+
+        //Get quote validation function
         function FieldValid(field,valengine,message,notLike) {
             var valtypes = valengine.split(","), result = true;
             $(field).bind('focus change', function(){
@@ -657,7 +661,7 @@ if (!!$customFieldsForm) {
                     return false;
                 }
             });
-			
+
             if($.inArray("blank", valtypes) != -1){
                 $.each(field,function(){
                     if($(this).val() == ""){
@@ -686,7 +690,7 @@ if (!!$customFieldsForm) {
             }
             return result;
         }
-				
+
         //Select Vehicle
         $("div.vehicle_box_cont").click(function(){
             if(!$(this).hasClass("active")){
@@ -699,10 +703,10 @@ if (!!$customFieldsForm) {
                 $(".vehicle-type-radio > input:eq("+index+")").prop('checked',true).trigger("change");
             }
         });
-  	
+
         //Get current date time
-        var myDate = new Date(), hours, minutes;
-				
+        // var myDate = new Date(), hours, minutes;
+
         //Date picker
         $("#date").datepicker({
             minDate           : 0,
@@ -711,14 +715,14 @@ if (!!$customFieldsForm) {
             dateFormat        : "dd/mm/yy",
             constrainInput    : true
         });
-				
-			
+
+
         //Datepicker default values
-        var defaultDate = $.datepicker.formatDate('dd/mm/yy', new Date());
+        var defaultDate = "<?php echo $office_date; ?>";
 
         if($("#date").val()=='')
             $("#date").val(defaultDate);
-				
+
         //Time picker
         $(".timeblock input").change(function(){
             if(($("input.hours:eq(0)").val() +''+$("input.hours:eq(1)").val()) > 23){
@@ -729,10 +733,10 @@ if (!!$customFieldsForm) {
                 $("input.minutes:eq(0)").val(5);
                 $("input.minutes:eq(1)").val(9);
             }
-        });	
+        });
         $(".timeblock a").click(function(){
             var $input = $(this).parent().find("input"), index = $(".timeblock").index($(this).parent());
-			
+
             //Field ranges
             switch(index){
                 case 0:
@@ -748,21 +752,21 @@ if (!!$customFieldsForm) {
                 //After 20 oclock range
                 if(index == 1 && $(".timeblock:eq(0) input").val() == 2)
                     range = [0,1,2,3];
-			
-                //Change value	
+
+                //Change value
                 var val = parseInt($input.val()) + (($(this).hasClass("add")) ? 1 : -1);
                 if($.inArray(val, range) != -1)
                     $input.val(val).trigger("change");
-				
+
                 //Swap range fix
                 if(index == 0 && val == 2 && $(".timeblock:eq(1) input").val() > 3)
                     $(".timeblock:eq(1) input").val("3");
-            });		
+            });
             //Timepicker default values
 
             //        //Set hours
-                       
-            hours = String(myDate.getHours()).split("");
+
+            hours = String(<?php echo $office_hour; ?>).split("");
             if(hours.length == 1) {
                 $("input.hours:eq(0)").val('0');
                 $("input.hours:eq(1)").val(hours[0]);
@@ -773,8 +777,9 @@ if (!!$customFieldsForm) {
                 if($("input.hours:eq(1)").val()=='')
                     $("input.hours:eq(1)").val(hours[1]);
             }
+
             //Set minutes
-            minutes = String(myDate.getMinutes()).split("");
+            minutes = String(<?php echo $office_minutes; ?>).split("");
             if(minutes.length == 1) {
                 $("input.minutes:eq(0)").val('0');
                 $("input.minutes:eq(1)").val(minutes[0]);

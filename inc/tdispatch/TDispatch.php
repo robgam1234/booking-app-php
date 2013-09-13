@@ -70,7 +70,7 @@ class TDispatch {
     /* API FUNCTIONS */
     function __construct($config = array()) {
         global $apiConfig;
-        $apiConfig = array_merge($apiConfig, $config);        
+        $apiConfig = array_merge($apiConfig, $config);
         $this->api_key = $apiConfig['api_key'];
         $this->api_cliente_id = $apiConfig['api_cliente_id'];
         $this->api_secret = $apiConfig['api_secret'];
@@ -91,8 +91,8 @@ class TDispatch {
         $this->fareCalculation = new FareCalculation;
         $this->vehicles = new Vehicles;
         $this->drivers = new Drivers;
-        
-        $this->getToken();        
+
+        $this->getToken();
     }
 
     public function getToken() {
@@ -120,9 +120,9 @@ class TDispatch {
     }
 
     /*
-     * api_info() 
+     * api_info()
      * Returns basic information about the current API session.      *
-     * @return (object) json object      
+     * @return (object) json object
      */
 
     public function api_info() {
@@ -141,7 +141,7 @@ class TDispatch {
     /* ACCOUNT FUNCTIONS */
 
     /*
-     * Account_create()  
+     * Account_create()
      * Creates new passenger's account and does sign in after that
      * @param $passenger (array) passenger information
      * @return (object) json object
@@ -152,7 +152,7 @@ class TDispatch {
     }
 
     /*
-     * Account_login()  
+     * Account_login()
      * o login for user
      * @param $user email for user
      * @param $password password for user
@@ -164,8 +164,8 @@ class TDispatch {
     }
 
     /*
-     * Account_logout()  
-     * do logout and unset all session vars   
+     * Account_logout()
+     * do logout and unset all session vars
      */
 
     public function Account_logout() {
@@ -175,9 +175,9 @@ class TDispatch {
     }
 
     /*
-     * Account_getPreferences()  
-     * Returns object with account preferences    
-     * @return (object) json object 
+     * Account_getPreferences()
+     * Returns object with account preferences
+     * @return (object) json object
      */
 
     public function Account_getPreferences() {
@@ -185,8 +185,8 @@ class TDispatch {
     }
 
     /*
-     * Account_setPreferences()  
-     * updates account preferences    
+     * Account_setPreferences()
+     * updates account preferences
      * @param $preferences (array) with new preferences
      * @return (object) json object with new preferences
      */
@@ -197,12 +197,22 @@ class TDispatch {
 
     /*
      * Account_getFleetdata()
-     * Returns account's office data 
-     * @return (object) json object    
+     * Returns account's office data
+     * @return (object) json object
      */
 
     public function Account_getFleetdata() {
         return $this->accounts->getFleetdata($this);
+    }
+
+    /*
+     * Account_getFleettime()
+     * Returns account's office time
+     * @return (object) json object
+     */
+
+    public function Account_getFleetTime() {
+        return $this->accounts->getFleetTime($this);
     }
 
     /*
@@ -219,9 +229,9 @@ class TDispatch {
 
     /*
      * Account_changePassword()
-     * Method to change password after reseting 
+     * Method to change password after reseting
      * @param $data (array) with token and new password.
-     * @return (bool) true or false    
+     * @return (bool) true or false
      */
 
     public function Account_changePassword($requestBody) {
@@ -231,7 +241,7 @@ class TDispatch {
     /*
      * Account_checkLogin()
      * Method to check if user is authenticated
-     * @return (bool) true or false    
+     * @return (bool) true or false
      */
 
     public function Account_checkLogin() {
@@ -284,7 +294,7 @@ class TDispatch {
     /*
      * Bookings_list()
      * Returns list with bookings of that passenger, according to given parameters
-     * @param $order_by Fields to order by, separated by commas. For descending order, put a minus sign before the field name. 
+     * @param $order_by Fields to order by, separated by commas. For descending order, put a minus sign before the field name.
      * Possible fields to order by:
       -pickup_time
       -dropoff_time
@@ -301,7 +311,7 @@ class TDispatch {
       -keywords
       -minutes_waited
      * @param $status
-     * Possible fields to status: 
+     * Possible fields to status:
       -quoting
       -incoming
       -from_partner
@@ -313,7 +323,7 @@ class TDispatch {
       -cancelled
       -draft
       Few statuses possible, if separated by comma
-     * @param $pickup_time (string (ISO format)) Show only bookings with a specified pickup time 
+     * @param $pickup_time (string (ISO format)) Show only bookings with a specified pickup time
      * @param $limit (int) Limit number of bookings
      * @param $offset (int) Use with limit parameter to get paged bookings; get {limit} bookings from {offset}. Default is 0
      * @return (object) json object (list of bookings)
@@ -325,22 +335,22 @@ class TDispatch {
 
     /*
      * Bookings_create()
-     * Creates a new Booking in Draft or Incoming status. 
+     * Creates a new Booking in Draft or Incoming status.
      * Returns the created booking, according to given parameters
-     * @param $customer 
+     * @param $customer
       example: $customer= array(
       'name' => 'Vincent vvan Gogh',
       'phone' => '+49234654967'
       );
-     * @param $passenger 
+     * @param $passenger
       example:  $passenger = array(
       'name' => 'Pablo Picasso',
       'phone' => '+49123470416',
       'email' => 'pablo@tdispatch.com'
       );
-     * @param $pickup_time  Timestamp for pickup time 
+     * @param $pickup_time  Timestamp for pickup time
      * @param $return_pickup_time Optional timestamp for returning booking pickup time
-     * @param $pickup_location 
+     * @param $pickup_location
       example: = $pickup_location = array(
       'address' => 'Grüntaler strasse 11 13357',
       'postcode' => '13357',
@@ -350,7 +360,7 @@ class TDispatch {
       'lng' => '13.387291'
       )
       );
-     * @param $way_points 
+     * @param $way_points
       example: $way_points = array(
       '0' => array(
       'address' => '',
@@ -362,7 +372,7 @@ class TDispatch {
       )
       )
       );
-     * @param $dropoff_location 
+     * @param $dropoff_location
       example $dropoff_location = array(
       'address' => '11 Bramblefield Close DA3 7RT',
       'postcode' => 'DA3 7QA',
@@ -391,9 +401,9 @@ class TDispatch {
     /*
      * Bookings_get()
      * Return information about a specific booking
-     * @param $bookingPk 
+     * @param $bookingPk
      * @return (object) json object (booking)
-     * 
+     *
      */
 
     public function Bookings_get($bookingPk) {
@@ -406,7 +416,7 @@ class TDispatch {
      * Returns the created booking, according to given parameters
      * param are the same as Bookings_create()
      * @return (object) json object (booking)
-     * 
+     *
      */
 
     public function Bookings_update($bookingPk, $customer, $passenger, $pickup_time, $return_pickup_time, $pickup_location, $way_points, $dropoff_location, $vehicle_type, $extra_instructions, $luggage, $passengers, $payment_method, $prepaid, $status, $price_rule, $customs = '') {
@@ -439,10 +449,10 @@ class TDispatch {
     /*
      * Bookings_tracking()
      * Tracking of booking
-     * @param $bookings (array) 
+     * @param $bookings (array)
       example: array($pk1, $pk2,$pkn);
      * @return (object) json object
-     * 
+     *
      */
 
     public function Bookings_tracking($bookings) {
@@ -453,7 +463,7 @@ class TDispatch {
      * Bookings_getCustom()
      * Get custom fields for bookings in the office. Can be called anonymously
      * @return (object) json object
-     * 
+     *
      */
 
     public function Bookings_getCustom() {
@@ -468,7 +478,7 @@ class TDispatch {
      * Returns list of available office's vehicle types. Can be called anonymously
      * @param $limit Limit number of results. Optional (limited to 4)
      * @return (object) json object
-     * 
+     *
      */
 
     public function Vehicles_list($limit = 4) {
@@ -486,7 +496,7 @@ class TDispatch {
      * @param $radius (float) Optional. Search radius in km. Default value is 0.1
      * @param $offset (int) Use with limit parameter to get paged drivers; get {limit} drivers from {offset}. Default is 0
      * @return (object) json object
-     * 
+     *
      */
 
     public function Drivers_nearby($limit, $location, $radius, $offset) {
