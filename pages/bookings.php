@@ -1,5 +1,26 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 defined('INDEX_CALL') or die('You cannot access this page directly.');
+
 $td = new TDispatch();
 //Check if user already logged in
 if (!$td->Account_checkLogin()) {
@@ -7,7 +28,6 @@ if (!$td->Account_checkLogin()) {
     exit;
 }
 ?>
-
 <div id="maincol" >
     <!--BOOKINGS TABLE CONTAINER-->
     <div class="account_fields_cont box-container">
@@ -42,10 +62,12 @@ if (!$td->Account_checkLogin()) {
 
                 if ($ipp < $total) {
                     echo '<div class="bookings_pagination" style="width:100%;">';
-                    if ($page > 1)
+                    if ($page > 1) {
                         echo '<a href="bookings/?page=' . ($page - 1) . '" style="float:left;">Previous Page</a>';
-                    if ($offset + $ipp < $total)
+                    }
+                    if ($offset + $ipp < $total) {
                         echo '<a href="bookings/?page=' . ($page + 1) . '" style="float:right;">Next Page</a>';
+                    }
                     echo '</div>';
                 }
             } else {
@@ -70,58 +92,58 @@ if (!$td->Account_checkLogin()) {
             #bookings-completed-message{border-color:#0fc16a;background-color: #f7fffa;}
         </style>
         <script type="text/javascript">
-            $(function(){   
-               
-              
+            $(function(){
+
+
                 $('.bookings_cancel').click(function(){
-                    var pk = $(this).attr('pk');                    
+                    var pk = $(this).attr('pk');
                     $('#bookings-cancel-confirmation').attr('pk',pk).show();
                     $('#bookings-cancel-confirmation-yes').attr('pk',pk);
                     $('.booking_table_rows').removeClass('booking-highlight');
-                    $(this).closest('.booking_table_rows').addClass('booking-highlight');                   
+                    $(this).closest('.booking_table_rows').addClass('booking-highlight');
                 });
-                
+
                 $('#bookings-cancel-confirmation-no').click(function(){
                     $('.booking_table_rows').removeClass('booking-highlight');
                     $('#bookings-cancel-confirmation').hide();
                     $('#bookings-cancel-confirmation-notes').val('');
                 });
-                
+
                 $('#bookings-cancel-confirmation-yes').click(function(){
-                    var pk = $(this).attr('pk');    
+                    var pk = $(this).attr('pk');
                     $.post("/",{
                         JSON:true,
                         TYPE:'cancelBooking',
                         bookingPk:pk,
                         notes:$('#bookings-cancel-confirmation-notes').val()
                     },
-                    function(data){ 
+                    function(data){
                         $('.booking_table_rows.booking-highlight .bookings_status').html('');
                         $('.booking_table_rows').removeClass('booking-highlight');
                         $('#bookings-cancel-confirmation').fadeOut(1000, function(){
                             $('#bookings-cancel-confirmation-notes').val('');
-                        });                       
+                        });
                     });
                 });
-                
-                    
+
+
 <?php if (isset($_SESSION['booking_complete']) && $_SESSION['booking_complete'] != ''): ?>
             var book_pk = '<?php echo $_SESSION['booking_complete']; ?>';
             $('.booking_table_rows').removeClass('booking-highlight');
             $('.booking_table_rows[book_pk='+book_pk+']').addClass('booking-highlight');
-                                    
+
             $('#bookings-completed-message').fadeIn(1000, function(){
                 setTimeout(function(){
                     $('.booking_table_rows').removeClass('booking-highlight');
                     $('#bookings-completed-message').fadeOut(1000);
                 },3000);
-            });                                
+            });
     <?php
     unset($_SESSION['booking_complete']);
 endif;
 ?>
-                
-                
+
+
     });
         </script>
 
@@ -142,13 +164,13 @@ endif;
         <a href="javascript:void(0);" id="bookings-cancel-confirmation-yes" pk="" class="blue-button">Yes</a>
         <a href="javascript:void(0);" id="bookings-cancel-confirmation-no" class="blue-button">No</a>
     </div>
-    <div id="bookings-completed-message" class="box-container" style="display: none;">        
-        <p>Your booking is completed!</p>        
+    <div id="bookings-completed-message" class="box-container" style="display: none;">
+        <p>Your booking is completed!</p>
     </div>
 </div>
 
 </div>
 <!--MAP CONTAINER-->
 
-<div style="clear:both"></div>	
+<div style="clear:both"></div>
 </div>

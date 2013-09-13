@@ -1,4 +1,24 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 defined('INDEX_CALL') or die('You cannot access this page directly.');
 
 $td = new TDispatch();
@@ -31,28 +51,28 @@ if (!$td->Account_checkLogin()) {
     </div>
     <!--MAP CONTAINER-->
 
-    <div style="clear:both"></div>	
+    <div style="clear:both"></div>
     <script type="text/javascript">
         function getURLParameter(name) {
             return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
         }
-                
+
         $(function() {
-            
-            var pk = getURLParameter("pk");            
+
+            var pk = getURLParameter("pk");
             if($(".vehicle_tracking_page").length){
-                //Read url paramteres                
+                //Read url paramteres
                 $.post("/",{
                     JSON:true,
                     TYPE:'getBooking',
                     bookingPk:pk
                 },
-                function(data){                   
+                function(data){
                     //Locations to track
                     var locationsToTrack = [];
 
                     //Start location
-                    var start  = data.pickup_location.address;                    
+                    var start  = data.pickup_location.address;
                     locationsToTrack.push('<div class="location_track_line"><b>Pickup address:</b><span>'+start+'</span></div>');
 
                     //Waypoint locations
@@ -72,41 +92,41 @@ if (!$td->Account_checkLogin()) {
                     //                    var myDate = Date.fromISO(data.pickup_time), pkdate, pktime;
                     //                    pkdate =  myDate.getDate()+'/'+ (myDate.getMonth()+1)+'/'+myDate.getFullYear();
                     //                    pktime = ((myDate.getHours() > 10 ? "" : "0")+myDate.getHours())+":"+((myDate.getMinutes() > 10 ? "" : "0")+myDate.getMinutes())
-                    var aux = new Date(data.pickup_time);                  
-                    var dateString_pickup = 
-                        ("0" + aux.getUTCDate()).slice(-2) + "/" + 
+                    var aux = new Date(data.pickup_time);
+                    var dateString_pickup =
+                        ("0" + aux.getUTCDate()).slice(-2) + "/" +
                         ("0" + (aux.getUTCMonth()+1)).slice(-2) +"/"+
                         aux.getUTCFullYear() +" "+
                         ("0" + aux.getUTCHours()).slice(-2) + ":" +
                         ("0" + aux.getUTCMinutes()).slice(-2) ;
-                  
+
                     locationsToTrack.push('<div class="booking_date_cost"><b>Booking date:</b><span>'+dateString_pickup+'</span></div>');
-			
+
                     //Price
                     var totalcost = data.total_cost.value;
                     locationsToTrack.push('<div class="booking_date_cost"><b>Cost:</b><span>&pound;'+totalcost.toFixed(2)+'</span></div>');
-			
+
                     //Output
                     $(locationsToTrack.join('')).hide().insertAfter(".account_fields_cont h1").fadeIn();
-			
+
                     //                    //Set maps pk
                     //                    pknumb = data.pk;
                 });
             }
-        
+
             if($(".vehicle_tracking_page").length)
             {
                 //Load maps first time
                 $.post("/",{
                     JSON:true,
                     TYPE:'getTrack',
-                    bookingPk:pk                   
-                },function(data){ 
+                    bookingPk:pk
+                },function(data){
                     if(!$.isEmptyObject(data[0].driver))
                     {
                         //Get vehicle lng/lat and store it to local variable
                         var lat = data[0].driver.location.lat;
-                        var lng = data[0].driver.location.lng;                       
+                        var lng = data[0].driver.location.lng;
                         var setupLocation = new google.maps.LatLng(lat,lng);
                         //Setup google maps for first time
                         var mapOptions = {
@@ -126,12 +146,12 @@ if (!$td->Account_checkLogin()) {
                     }
                 },"json");
                 //Reload map marker and location every 30 sec
-                setInterval(function(){ 
+                setInterval(function(){
                     $.post("/",{
                         JSON:true,
                         TYPE:'getTrack',
-                        bookingPk:pk    
-                    },function(data){                      
+                        bookingPk:pk
+                    },function(data){
                         if(!$.isEmptyObject(data[0].driver))
                         {
                             //Get vehicle lng/lat and store it to local variable
@@ -147,8 +167,7 @@ if (!$td->Account_checkLogin()) {
                     },"json");
                 },30000);
             }
-        
+
         });
     </script>
 </div>
-

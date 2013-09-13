@@ -1,7 +1,29 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 defined('INDEX_CALL') or die('You cannot access this page directly.');
-if (isset($_REQUEST['fedit']))
+
+if (isset($_REQUEST['fedit'])) {
     $_POST['booking_form_type'] = 'fedit';
+}
 
 $booking_form_type = 'add';
 $bk_submit = 'Book &amp; Track Driver';
@@ -39,7 +61,6 @@ if (isset($_POST['booking_form_type'])) {
             $pickup_time = "{$y}-{$m}-{$d}T{$hour[0]}{$hour[1]}:{$minutes[0]}{$minutes[1]}:00+00:00";
             $return_pickup_time = "{$y}-{$m}-{$d}T{$hour[0]}{$hour[1]}:{$minutes[0]}{$minutes[1]}:00+00:00";
 
-
             $pickup_location = json_decode(stripslashes($_POST['locationobj']), true);
             $dropoff_location = json_decode(stripslashes($_POST['destinationobj']), true);
 
@@ -72,22 +93,21 @@ if (isset($_POST['booking_form_type'])) {
                 }
             }
 
-
-            if ($td->Account_checkLogin()) :
+            if ($td->Account_checkLogin()) {
                 $bk_resp = $td->Bookings_create($customer, $passenger, $pickup_time, $return_pickup_time, $pickup_location, $way_points, $dropoff_location, $vehicle_type, $extra_instructions, $luggage, $passengers, $payment_method, $prepaid, $status, $price_rule, $customFieldBooking);
-                if ($bk_resp) :
+                if ($bk_resp) {
                     unset($_POST);
                     unset($_SESSION['post_booking']);
                     $_SESSION['booking_complete'] = $bk_resp['pk'];
                     //$_SESSION['booking_complete'] = array('bookingPk' => $bk_resp['bookingPk'], 'booking' => json_encode($bk_resp));
                     header('Location:/bookings');
-                else:
+                } else {
                     $error_msg_booking = $td->getErrorMessage();
-                endif;
-            endif;
+                }
+            }
             break;
-        case 'update':
 
+        case 'update':
             $booking_form_type = 'update';
             $bk_submit = 'Update';
 
@@ -126,7 +146,6 @@ if (isset($_POST['booking_form_type'])) {
             );
             $vehicle_type = $_POST['vehicle_type'];
 
-
             $extra_instructions = $_POST['extra_instructions'];
             $luggage = (int) $_POST['luggage'];
             $passengers = (int) $_POST['passengers'];
@@ -146,24 +165,25 @@ if (isset($_POST['booking_form_type'])) {
 
 
             $bookingPk = $_POST['bookingPk'];
-            if ($td->Account_checkLogin()) :
+            if ($td->Account_checkLogin()) {
                 $bk_resp = $td->Bookings_update($bookingPk, $customer, $passenger, $pickup_time, $return_pickup_time, $pickup_location, $way_points, $dropoff_location, $vehicle_type, $extra_instructions, $luggage, $passengers, $payment_method, $prepaid, $status, $price_rule, $customFieldBooking);
-                if ($bk_resp) :
+                if ($bk_resp) {
                     unset($_POST);
                     unset($_SESSION['post_booking']);
                     $_SESSION['booking_complete'] = $bk_resp['pk'];
                     //$_SESSION['booking_complete'] = array('bookingPk' => $bk_resp['bookingPk'], 'booking' => json_encode($bk_resp));
                     header('Location:/bookings');
-                else:
+                } else {
                     $error_msg_booking = $td->getErrorMessage();
-                endif;
-            endif;
+                }
+            }
             break;
+
         case 'fedit':
             $booking_form_type = 'update';
             $bk_submit = 'Update';
             $bk_resp = $td->Bookings_get($_REQUEST['pk']);
-            if ($bk_resp) :
+            if ($bk_resp) {
                 $booking_resp = array();
                 $bk_date = date_parse($bk_resp['pickup_time']);
 
@@ -196,8 +216,9 @@ if (isset($_POST['booking_form_type'])) {
                         $booking_resp['custom_' . $customField['internal_name']] = $bk_resp['custom_' . $customField['internal_name']];
                     }
                 }
-            endif;
+            }
             break;
+
         default:
             break;
     }
@@ -206,12 +227,13 @@ if (isset($_POST['booking_form_type'])) {
 function valueReturnBooking($key, $default = '') {
     global $booking_resp;
     $value = '';
-    if (isset($_SESSION['post_booking'][$key]))
+    if (isset($_SESSION['post_booking'][$key])) {
         $value = stripslashes($_SESSION['post_booking'][$key]);
-    elseif (isset($booking_resp[$key]))
+    } elseif (isset($booking_resp[$key])) {
         $value = $booking_resp[$key];
-    else
+    } else {
         $value = stripslashes($default);
+    }
     return $value;
 }
 
@@ -220,9 +242,11 @@ function typeCustomField($type, $value) {
         case 'integer':
             return (int) $value;
             break;
+
         case 'money':
             return (float) $value;
             break;
+
         case 'string':
         default:
             return $value;
@@ -306,8 +330,9 @@ if (!!$customFieldsForm) {
         if ($vehicles) {
 
             $keytypeselected = valueReturnBooking('vehicle_type');
-            if ($keytypeselected == '')
+            if ($keytypeselected == '') {
                 $keytypeselected = $vehicles[0]['pk'];
+            }
             $radios_vehicles = '';
             $select_vehicles = '';
             $checked_v = '';

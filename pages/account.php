@@ -1,5 +1,26 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 defined('INDEX_CALL') or die('You cannot access this page directly.');
+
 $td = new TDispatch();
 //Check if user already logged in
 if (!$td->Account_checkLogin()) {
@@ -11,42 +32,45 @@ $statusmsg = '';
 
 /**
   Update info
- *
- *
  */
 if (isset($_POST['update']) && $_POST['update'] === 'Update') {
     $userData = array();
 
     //Name
-    if (isset($_POST['update_name']) && trim($_POST['update_name']) != '')
+    if (isset($_POST['update_name']) && trim($_POST['update_name']) != '') {
         $userData['first_name'] = (trim($_POST['update_name']));
-    else
+    } else {
         $errors['update_name'] = 'Name: this field is required.';
+    }
 
     //Last name
-    if (isset($_POST['update_lastname']) && trim($_POST['update_lastname']) != '')
+    if (isset($_POST['update_lastname']) && trim($_POST['update_lastname']) != '') {
         $userData['last_name'] = (trim($_POST['update_lastname']));
-    else
+    } else {
         $errors['update_lastname'] = 'Surname: this field is required.';
+    }
 
     //phone
-    if (isset($_POST['update_phone']) && trim($_POST['update_phone']) != '')
+    if (isset($_POST['update_phone']) && trim($_POST['update_phone']) != '') {
         $userData['phone'] = (trim($_POST['update_phone']));
-    else
+    } else {
         $errors['update_phone'] = 'Phone: this field is required.';
+    }
 
     //email
-    if (isset($_POST['update_email']) && trim($_POST['update_email']) != '')
+    if (isset($_POST['update_email']) && trim($_POST['update_email']) != '') {
         $userData['email'] = (trim($_POST['update_email'])); //TODO validate email
-    else
+    } else {
         $errors['update_email'] = 'Email: this field is required.';
+    }
 
     //birth_date
     if (isset($_POST['update_dob']) && trim($_POST['update_dob']) != '') {
         list($d, $m, $y) = explode('/', $_POST['update_dob']);
         $userData['birth_date'] = ($y . '-' . $m . '-' . $d . "T00:00:00");
-    }else
+    } else {
         $errors['update_dob'] = 'Date of Birth: this field is required.';
+    }
 
 
     $userData['receive_email_notifications'] = (isset($_POST['receive_email']) && $_POST['receive_email'] == 'on') ? true : false;
@@ -90,8 +114,9 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
     //Get user data from session
     $userInfo = $td->Account_getPreferences();
 
-    if (!$userInfo)
+    if (!$userInfo) {
         $statusmsg = $td->getErrorMessage();
+    }
     $errormsg = '';
     if (isset($errors) && count($errors)) {
         foreach ($errors as $key => $value) {
@@ -104,7 +129,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
     <div id="updated_data_message" class="account_fields_cont box-container">
         <h1>Account information updated</h1>
     </div>
-    <?php unset($_SESSION['updated-data']); endif ?>
+    <?php unset($_SESSION['updated-data']); endif; ?>
 
     <div class="account_fields_cont box-container">
         <h1>Your Account Details <font><?php if (isset($statusmsg)) echo $statusmsg; ?>&nbsp;</font></h1>
@@ -230,7 +255,6 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                     }
                 });
 
-
                 $('#update_dob').datepicker({
                     changeMonth: true,
                     changeYear: true,
@@ -259,8 +283,6 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                     });
                 },3000);
             }
-
-
 
             // Handler for .ready() called.
         });

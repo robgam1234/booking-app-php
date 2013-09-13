@@ -1,7 +1,23 @@
 <?php
-
-/* Generic exception class
- */
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
 
 class OAuth {
 
@@ -23,13 +39,13 @@ class OAuth {
     public function getAccessToken(TDispatch $td) {
         //If is the first time or not have session, do authenticate anonimously
         if(!isset($_SESSION['TDISPATCH']))
-            $this->obtainAutorizationCode($td);     
-        
+            $this->obtainAutorizationCode($td);
+
         //
-        if (isset($_SESSION['TDISPATCH']['access']["access_token"])) {          
+        if (isset($_SESSION['TDISPATCH']['access']["access_token"])) {
             return $_SESSION['TDISPATCH']['access']["access_token"];
         }
-        if (isset($_SESSION['TDISPATCH']['access']["anonimously"])) {           
+        if (isset($_SESSION['TDISPATCH']['access']["anonimously"])) {
             return $_SESSION['TDISPATCH']['access']["anonimously"];
         }
         return false;
@@ -38,7 +54,7 @@ class OAuth {
     /**
       Obtain an Authorization Code from the API
      */
-    public function obtainAutorizationCode(TDispatch $td, $anonimously = true, $CLUsername = "", $CLPassword = "", $fbLogin = false) {       
+    public function obtainAutorizationCode(TDispatch $td, $anonimously = true, $CLUsername = "", $CLPassword = "", $fbLogin = false) {
         //URL parameters data
         $buildparams = array(
             "client_id" => $this->client_id,
@@ -69,15 +85,15 @@ class OAuth {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //WRITE URL
         //Execute post
-        $authrezult = curl_exec($ch);        
+        $authrezult = curl_exec($ch);
         $info = curl_getinfo($ch);
-       
+
         //Close connection
         curl_close($ch);
         $authcode = json_decode($authrezult, true);
-        //New call for access_token	
+        //New call for access_token
         if ($info["http_code"] == "200") {
-            //Decode response            
+            //Decode response
             if ($authcode['status'] === 'Failed') {
                 $td->setError($authcode);
                 return false;
@@ -122,7 +138,7 @@ class OAuth {
                         }
                     }
                     //Decode json response
-                    
+
                     //Auth info
                     if (!$anonimously) {
                         $_SESSION['TDISPATCH']['access']["refresh"] = $response["refresh_token"];
@@ -132,7 +148,7 @@ class OAuth {
                         $_SESSION['TDISPATCH']['access']["refresh"] = $response["refresh_token"];
                     }
                     $this->access_token = $response["access_token"];
-                    return true;             
+                    return true;
                 } else {
                     //Show error message
                     $td->setError($response);
@@ -160,9 +176,8 @@ class OAuth {
         $curl->setPost($data);
         $result = $curl->getSource();
         $curl->close();
+
         return json_decode($result, true);
     }
 
 }
-
-?>

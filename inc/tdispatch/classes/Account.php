@@ -1,15 +1,24 @@
 <?php
-/**
- * Description of Account
-    Method	Resource path                   Description
-    create	POST /accounts                  Creates new passenger's account
-    get         GET /accounts/preferences	Returns account preferences
-    update	POST /accounts/preferences	Updates account preferences
-    get         GET /accounts/fleetdata         Returns account's office data
-    post	POST /accounts/reset-password	Allows user to reset his password
-    post	POST /accounts/change-password	Method to change password after reseting
- * @author Punchline
- */
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 class Account {
     /*
      * create()
@@ -22,25 +31,21 @@ class Account {
         $data = array(
             "key" => $td->getApiKey()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'accounts?' . http_build_query($data);
-        //Open connection
+
         $ch = curl_init();
         $passenger = array_merge($passenger, array('client_id' => $td->getClientId()));
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($passenger));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($passenger));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        //Execute post
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
 
-        //Decode jsonresponse
         $response = json_decode($result, true);
         if ($info["http_code"] == "200" && $response["status"] === 'OK') {
             //Revoke anonimous first
@@ -55,6 +60,7 @@ class Account {
                         unset($_SESSION['TDISPATCH']);
                 }
             }
+
             //Auth info
             $_SESSION['TDISPATCH']['passenger']["pk"] = $response["passenger"]["pk"];
             $_SESSION['TDISPATCH']['access']["access_token"] = $response["passenger"]["access_token"];
@@ -98,33 +104,26 @@ class Account {
 
     public function getPreferences(TDispatch $td) {
 
-
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'accounts/preferences?' . http_build_query($data);
-        //Open connection
 
         $ch = curl_init();
-
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
 
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
         }
-        //Decode jsonresponse
+
         return $res['preferences'];
     }
 
@@ -184,27 +183,22 @@ class Account {
 
     public function setPreferences(TDispatch $td, $preferences = array()) {
 
-
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'accounts/preferences?' . http_build_query($data);
-        //Open connection
         $ch = curl_init();
 
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($preferences));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($preferences));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        //Execute post
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
-        //Decode jsonresponse
+
         return json_decode($result, true);
     }
 
@@ -212,24 +206,17 @@ class Account {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'fleet/time?' . http_build_query($data);
-        //Open connection
 
         $ch = curl_init();
-
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        //Execute post
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
 
-        // Get the time
         $full_time = json_decode($result, true)['time'];
 
         $parsed_time = array(
@@ -246,24 +233,16 @@ class Account {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'accounts/fleetdata?' . http_build_query($data);
-        //Open connection
-
         $ch = curl_init();
-
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        //Execute post
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
 
-        //Decode jsonresponse
         return json_decode($result, true);
     }
 
@@ -271,13 +250,10 @@ class Account {
         $data = array(
             "key" => $td->getApiKey()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'accounts/reset-password?' . http_build_query($data);
-        //Open connection
 
         $ch = curl_init();
-
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         $dataSend = array(
@@ -295,13 +271,11 @@ class Account {
             error_log("DATA BODY: ".http_build_query($dataSend));
         }
 
-        //Execute post
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //Close connection
+
         curl_close($ch);
 
-        //Decode jsonresponse
         return json_decode($result, true);
     }
 
@@ -309,13 +283,9 @@ class Account {
         $data = array(
             "key" => $td->getApiKey()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'accounts/change-password?' . http_build_query($data);
-        //Open connection
-
         $ch = curl_init();
-
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -330,21 +300,17 @@ class Account {
             error_log("DATA BODY: ".json_encode($requestBody));
         }
 
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
 
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
         }
-        //Decode jsonresponse
+
         return true;
     }
 
 }
-
-?>

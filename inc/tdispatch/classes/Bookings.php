@@ -1,23 +1,24 @@
 <?php
-
 /*
- * Method	Resource path	Description
-  list	GET /bookings	Returns list with bookings of that passenger, according to given parameters
-  create	POST /bookings	Creates a new booking in Draft or Incoming status. Can be called anonymously
-  get	GET /bookings/{bookingPk}	Returns booking information
-  update	POST /bookings/{bookingPK}	Updates booking information
-  cancel	POST /bookings/{bookingPk}/cancel	Cancels booking
-  receipt	POST /bookings/{bookingKey}/receipt	Returns PDF file with booking receipt
-  tracking	POST /bookings/track	Tracks booking
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Bookings
+ ******************************************************************************
  *
- * @author Punchline
- */
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 class Bookings {
 
     public function Bookings_list(TDispatch $td, $order_by = "", $status = "", $pickup_time = "", $limit = "", $offset = 0) {
@@ -29,29 +30,22 @@ class Bookings {
             "limit" => $limit,
             "offset" => $offset
         );
-      
-        //TD url
-        $url = $td->getFullApiUrl() . 'bookings?' . http_build_query($data);       
-        //Open connection
-        $ch = curl_init();
 
-        //Set the url, Number of POST vars, POST data
+        $url = $td->getFullApiUrl() . 'bookings?' . http_build_query($data);
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
         $info = curl_getinfo($ch);
-
-        //Close connection
         curl_close($ch);
+
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
-        }        
-        //Decode jsonresponse         
+        }
+
         return $res;
     }
 
@@ -59,16 +53,13 @@ class Bookings {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
-        $url = $td->getFullApiUrl() . 'bookings?' . http_build_query($data);
-        //Open connection
-        $ch = curl_init();
 
-        //Set the url, Number of POST vars, POST data
+        $url = $td->getFullApiUrl() . 'bookings?' . http_build_query($data);
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-       
+
         $dataSend = array(
             'customer' => $customer,
             'passenger' => $passenger,
@@ -86,7 +77,7 @@ class Bookings {
             'status' => $status,
             'price_rule' => $price_rule
         );
-        
+
         if($customs!=''){
             $dataSend = array_merge($dataSend,$customs);
         }
@@ -95,50 +86,45 @@ class Bookings {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
         $info = curl_getinfo($ch);
 
-        //Close connection
         curl_close($ch);
 
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
-        }  
-        //Decode jsonresponse
+        }
+
         return $res['booking'];
     }
 
     public function Bookings_get(TDispatch $td, $bookingPk) {
+
         if ($td->Account_checkLogin()) {
             $data = array(
                 "access_token" => $td->getToken()
             );
-            //TD url
+
             $url = $td->getFullApiUrl() . 'bookings/' . $bookingPk . '?' . http_build_query($data);
-            //Open connection
             $ch = curl_init();
 
-            //Set the url, Number of POST vars, POST data
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-            //Execute post
             $result = curl_exec($ch);
             $res = json_decode($result, true);
             $info = curl_getinfo($ch);
 
-            //Close connection
             curl_close($ch);
 
             if (!isset($res['status']) || $res['status'] !== 'OK') {
                 $td->setError($res);
                 return false;
             }
-            //Decode jsonresponse
+
             return $res['booking'];
         } else {
             $td->setError('not authenticated');
@@ -150,13 +136,11 @@ class Bookings {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'bookings/' . $bookingPk . '?' . http_build_query($data);
 
-        //Open connection
         $ch = curl_init();
 
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -177,7 +161,7 @@ class Bookings {
             'status' => $status,
             'price_rule' => $price_rule
         );
-        
+
         if($customs!=''){
             $dataSend = array_merge($dataSend,$customs);
         }
@@ -186,19 +170,17 @@ class Bookings {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
         $info = curl_getinfo($ch);
 
-        //Close connection
         curl_close($ch);
 
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
         }
-        //Decode jsonresponse
+
         return $res['booking'];
     }
 
@@ -206,12 +188,10 @@ class Bookings {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'bookings/' . $bookingPk . '/cancel?' . http_build_query($data);
-        //Open connection
         $ch = curl_init();
 
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -223,19 +203,17 @@ class Bookings {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataSend));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
         $info = curl_getinfo($ch);
 
-        //Close connection
         curl_close($ch);
 
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
         }
-        //Decode jsonresponse
+
         return true;
     }
 
@@ -243,27 +221,22 @@ class Bookings {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
+
         $url = $td->getFullApiUrl() . 'bookings/' . $bookingPk . '/receipt?' . http_build_query($data);
 
-        //Open connection
         $ch = curl_init();
-
-        //Set the url, Number of POST vars, POST data
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        //Execute post
-        $result = curl_exec($ch);        
+        $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //Close connection
         curl_close($ch);
-        if (!isset($info['http_code']) || $info['http_code'] != "200") {            
+
+        if (!isset($info['http_code']) || $info['http_code'] != "200") {
             $td->setError(json_decode($result, true));
             return false;
         }
-        //Decode jsonresponse        
+
         return $result;
     }
 
@@ -272,16 +245,15 @@ class Bookings {
             $data = array(
                 "access_token" => $td->getToken()
             );
-            //TD url
+
             $url = $td->getFullApiUrl() . 'bookings/track?' . http_build_query($data);
-            //Open connection
             $ch = curl_init();
 
-            //Set the url, Number of POST vars, POST data
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_URL, $url);
-            if (!is_array($bookings))
+            if (!is_array($bookings)) {
                 $bookings = array($bookings);
+            }
             $dataSend = array(
                 'booking_pks' => $bookings
             );
@@ -290,58 +262,45 @@ class Bookings {
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataSend));
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-            //Execute post
             $result = curl_exec($ch);
             $res = json_decode($result, true);
             $info = curl_getinfo($ch);
 
-            //Close connection
             curl_close($ch);
 
             if (!isset($res['status']) || $res['status'] !== 'OK') {
                 $td->setError($res);
                 return false;
             }
-            //Decode jsonresponse
+
             return $res['bookings'];
         } else {
             $td->setError('not authenticated');
             return false;
         }
     }
-    
+
      public function Bookings_customfields(TDispatch $td) {
         $data = array(
             "access_token" => $td->getToken()
         );
-        //TD url
-        $url = $td->getFullApiUrl() . 'bookings/custom-fields?' . http_build_query($data);
-        
-        //Open connection
-        $ch = curl_init();
 
-        //Set the url, Number of POST vars, POST data
+        $url = $td->getFullApiUrl() . 'bookings/custom-fields?' . http_build_query($data);
+
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        //Execute post
         $result = curl_exec($ch);
         $res = json_decode($result, true);
-
         $info = curl_getinfo($ch);
-
-        //Close connection
         curl_close($ch);
 
         if (!isset($res['status']) || $res['status'] !== 'OK') {
             $td->setError($res);
             return false;
         }
-        //Decode jsonresponse
         return $res['custom_fields'];
     }
 
 }
-
-?>

@@ -1,19 +1,41 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 
 //$td = new TDispatch();
 function valueReturnForm($key, $number = false) {
     if (!isset($_SESSION))
         session_start();
     $form_resp = array();
-    if (isset($_SESSION['reacreateform']))
+    if (isset($_SESSION['reacreateform'])) {
         $form_resp = $_SESSION['reacreateform'];
+    }
     $value = '';
-    if (isset($_POST[$key]))
+    if (isset($_POST[$key])) {
         $value = $_POST[$key];
-    elseif (isset($form_resp[$key]))
+    } elseif (isset($form_resp[$key])) {
         $value = $form_resp[$key];
-    else
+    } else {
         $value = (!$number) ? '' : 0;
+    }
     return $value;
 }
 
@@ -48,7 +70,7 @@ if (!empty($_POST['register'])) {
   Do login autentication
  */
 if (!empty($_POST['login'])) {
-    //Posted vars into local variables 
+    //Posted vars into local variables
     $username = $_POST["email"];
     $password = $_POST["pass"];
     $res_login = $td->Account_login($username, $password);
@@ -65,8 +87,9 @@ if (!empty($_POST['login'])) {
 $loggedin = $td->Account_checkLogin();
 
 if (isset($form_resp)) {
-    if (!isset($_SESSION))
+    if (!isset($_SESSION)) {
         session_start();
+    }
     $_SESSION['recreateform'] = $form_resp;
 }
 ?>
@@ -91,10 +114,10 @@ if (isset($form_resp)) {
 
         <?php
         if (isset($loggedin) && $loggedin) :
-            ?>           
-            <ul id="login_nav">    
+            ?>
+            <ul id="login_nav">
                 <li class="last"><a href="logout">Logout</a></li>
-            </ul>            
+            </ul>
         <?php else: ?>
             <ul id="login_nav" class="login-ul">
                 <li>
@@ -161,7 +184,7 @@ if (isset($form_resp)) {
                     <div class="login_form"  id="statusFinalMsg" style="display:none;"><p style="text-align: center;"></p></div>
 
 
-                </div>               
+                </div>
                 <!--Login fields-->
                 <!--Register fields-->
                 <div class="register_fields_cont" class="box-container">
@@ -212,12 +235,12 @@ if (isset($form_resp)) {
 
                 <!--Register fields-->
             </div>
-            <!--LOGIN CONTAINER-->	
+            <!--LOGIN CONTAINER-->
             <?php
         }
         ?>
 
-    </div>    
+    </div>
 
 </div>
 <!--HEADER SECTION-->
@@ -235,7 +258,7 @@ if (isset($form_resp)) {
 </style>
 <script>
     $(function(){
-        $('.close').click(function(){            
+        $('.close').click(function(){
             var parent = $(this).parent().attr('id');
             var parentClass = $(this).parent().attr('class');
             $(this).parent().fadeOut(animationTime, function(){
@@ -252,32 +275,32 @@ if (isset($form_resp)) {
 
                 $('#overlay').removeClass('active').hide();
             });
-            
+
             //Reset login form to original form
             $("#resetpwd_form").hide();
             $("#login_form").show();
             $('#statusLoading').hide();
             $('#statusFinalMsg').hide();
         });
-        
-        
-        
-        if($("#login_cont").length){	
+
+
+
+        if($("#login_cont").length){
             //*** CLICK ON ENTER TO DO LOGIN **//
             $('#login_form').keypress(function(e){
                 if(e.which == 13){//Enter key pressed
                     $('#login-account').click();//Trigger search button click event
                 }
             });
-            
-            
+
+
             //***RESET PASSS **///
-            $('#reset-password').click(function(){  
+            $('#reset-password').click(function(){
                 $("#login_form").fadeOut(1000,function(){
                     $("#resetpwd_form").fadeIn(1000);
-                });               
+                });
             });
-            $('#backtologin').click(function(){   
+            $('#backtologin').click(function(){
                 $("#resetpwd_form").fadeOut(1000,function(){
                     $("#login_form").fadeIn(1000);
                 });
@@ -287,37 +310,37 @@ if (isset($form_resp)) {
                     $("#resetpwd_form").fadeOut(500,function(){
                         $('#statusLoading').show();
                     });
-                    
+
                     var button = this;
                     $.post("/",{
                         JSON:true,
                         TYPE:'resetPassword',
                         email:$('#login_emailreset').val()
                     },
-                    function(data){ 
+                    function(data){
                         $("#statusLoading").hide();
                         if(data.status == 'OK'){
                             $('#statusFinalMsg p').html('Please check your email.');
                         }else
-                            $('#statusFinalMsg p').html('Operation failed, please try again later.');                                                
-                        
+                            $('#statusFinalMsg p').html('Operation failed, please try again later.');
+
                         $("#statusFinalMsg").show();
-                        
-                        setTimeout(function(){                    
+
+                        setTimeout(function(){
                             $('.login_fields_cont').fadeOut(1000, function(){
                                 //Reset login form to original form
-                                $("#resetpwd_form").hide(); 
+                                $("#resetpwd_form").hide();
                                 $('#statusLoading').hide();
-                                $('#statusFinalMsg').hide();                                
+                                $('#statusFinalMsg').hide();
                                 $("#login_form").show();
-            
-                                $('#overlay').removeClass('active').hide();                                
+
+                                $('#overlay').removeClass('active').hide();
                             });
                         },4000);
                     });
                 }
             });
-            
+
             $( '#passwordHelp' ).click(function(){
                 $('#errorMSGpass_help').toggle();
             });
@@ -325,15 +348,15 @@ if (isset($form_resp)) {
 
 
             $('.login_click,.login-ul .blue-button,#login, #login_book').click(function(){
-                $("#resetpwd_form").hide(); 
+                $("#resetpwd_form").hide();
                 $('#statusLoading').hide();
-                $('#statusFinalMsg').hide();                                
+                $('#statusFinalMsg').hide();
                 $("#login_form").show();
                 $('#overlay').addClass('active').show();
                 $('.login_fields_cont').fadeIn(animationTime);
             });
 
-            $('.register_click,#create, #create_book').click(function(){                
+            $('.register_click,#create, #create_book').click(function(){
                 $('#overlay').addClass('active').show();
                 $('.register_fields_cont').fadeIn(animationTime);
                 return false;
@@ -343,26 +366,26 @@ if (isset($form_resp)) {
             var validateReset = $("#resetpwd_form").validate({
                 rules: {
                     email : {
-                        required: true, 
+                        required: true,
                         email: true
                     }
                 },
                 messages: {
-                    email    : "Please enter a valid email address"                    
+                    email    : "Please enter a valid email address"
                 }
             });
-            
+
             //Login validation
             var validateLogin = $("#login_form").validate({
                 rules: {
                     email : {
-                        required: true, 
+                        required: true,
                         email: true
                     },
                     pass  : {
                         password:false,
-                        required: true, 
-                        minlength: 5, 
+                        required: true,
+                        minlength: 5,
                         notEqual: "Your password"
                     }
                 },
@@ -379,33 +402,33 @@ if (isset($form_resp)) {
             var validateRegister = $("#register_form").validate({
                 rules: {
                     regname     : {
-                        required: true, 
+                        required: true,
                         notEqual: "Your First Name"
                     },
                     reglastname     : {
-                        required: true, 
+                        required: true,
                         notEqual: "Your Last Name"
                     },
                     regemail    : {
-                        required: true, 
+                        required: true,
                         email: true
                     },
                     regphone    : {
                         NumbersOnly:true,
-                        minlength: 8, 
-                        maxlength: 15, 
-                        required: true, 
+                        minlength: 8,
+                        maxlength: 15,
+                        required: true,
                         notEqual: "Your phone number"
                     },
-                    regpass     : {  
+                    regpass     : {
                         password:true,
-                        //required: true, 
-                        //minlength: 5, 
+                        //required: true,
+                        //minlength: 5,
                         notEqual: "Your password"
                     },
                     confirmpass : {
-                        required: true, 
-                        minlength: 5, 
+                        required: true,
+                        minlength: 5,
                         equalTo: "#register_pass"
                     }
                 },
@@ -428,9 +451,9 @@ if (isset($form_resp)) {
                     }
                 }
             });
-            
-            $('#register_pass').click(function(){                            
-                validateRegister.element( "#register_pass" )                            
+
+            $('#register_pass').click(function(){
+                validateRegister.element( "#register_pass" )
             });
 
 
@@ -439,7 +462,7 @@ if (isset($form_resp)) {
             });
 
             $('#create-account').click(function(){
-                $('#register_submit').trigger('click'); 
+                $('#register_submit').trigger('click');
             });
 
 <?php if (!$td->Account_checkLogin()) : ?>
@@ -450,9 +473,9 @@ if (isset($form_resp)) {
                         $('#login').trigger('click');
     <?php endif; ?>
 <?php endif; ?>
-    
+
         }
     })
 </script>
-<link rel="stylesheet" href="<?php echo $td->getHomeUrl(); ?>js/jquery.validate.password.css" type="text/css" />     
+<link rel="stylesheet" href="<?php echo $td->getHomeUrl(); ?>js/jquery.validate.password.css" type="text/css" />
 <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery.validate.password.js" ></script>

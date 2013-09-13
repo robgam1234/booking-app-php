@@ -1,4 +1,23 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
 
 require_once 'inc/tdispatch/TDispatch.php';
 $td = new TDispatch();
@@ -6,7 +25,7 @@ $td = new TDispatch();
 $type = (isset($_POST['TYPE']) ? $_POST['TYPE'] : '');
 switch ($type) {
     case 'cancelBooking':
-        if ($td->Account_checkLogin()):
+        if ($td->Account_checkLogin()) {
             $bookingPk = (isset($_POST['bookingPk']) ? $_POST['bookingPk'] : '');
             $bookingNotes = (isset($_POST['notes']) ? $_POST['notes'] : '');
             //$bookingPk = '51c0e268c8bf070517a11874';
@@ -16,8 +35,9 @@ switch ($type) {
                 echo json_encode($out);
                 exit;
             }
-        endif;
+        }
         break;
+
     case 'resetPassword':
         $email = (isset($_POST['email']) ? $_POST['email'] : '');
         if ($email != '') {
@@ -29,6 +49,7 @@ switch ($type) {
             }
         }
         break;
+
     case 'getLocation':
         $location = (isset($_POST['location']) ? $_POST['location'] : '');
         $limit = (int) (isset($_POST['limit']) ? $_POST['limit'] : 10);
@@ -40,20 +61,22 @@ switch ($type) {
             exit;
         }
         break;
+
     case 'getTrack':
-        if ($td->Account_checkLogin()):
+        if ($td->Account_checkLogin()) {
             $bookingPk = (isset($_POST['bookingPk']) ? $_POST['bookingPk'] : '');
-            //$bookingPk = '51c0e268c8bf070517a11874';       
+            //$bookingPk = '51c0e268c8bf070517a11874';
             $out = $td->Bookings_tracking($bookingPk);
             if ($out) {
                 header('Content-type: application/json');
                 echo json_encode($out);
                 exit;
             }
-        endif;
+        }
         break;
+
     case 'getBooking':
-        if ($td->Account_checkLogin()):
+        if ($td->Account_checkLogin()) {
             $bookingPk = (isset($_POST['bookingPk']) ? $_POST['bookingPk'] : '');
             //$bookingPk = '51c0e268c8bf070517a11874';
             $out = $td->Bookings_get($bookingPk);
@@ -62,8 +85,9 @@ switch ($type) {
                 echo json_encode($out);
                 exit;
             }
-        endif;
+        }
         break;
+
     case 'getquotes':
         $pickupLocation = json_decode(stripslashes($_POST["locationobj"]), true);
         $dropoffLocation = json_decode(stripslashes($_POST["destinationobj"]), true);
@@ -94,4 +118,3 @@ switch ($type) {
     default:
         break;
 }
-?>

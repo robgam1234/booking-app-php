@@ -1,9 +1,29 @@
 <?php
+/*
+ ******************************************************************************
+ *
+ * Copyright (C) 2013 T Dispatch Ltd
+ *
+ * Licensed under the GPL License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+*/
+
 defined('INDEX_CALL') or die('You cannot access this page directly.');
 
-if (isset($_REQUEST['token']) && $_REQUEST['token'] != '')
+if (isset($_REQUEST['token']) && $_REQUEST['token'] != '') {
     $token = $_REQUEST['token'];
-else {
+} else {
     header('Location:' . $td->getHomeUrl());
     exit;
 }
@@ -13,58 +33,60 @@ $statusmsg = '';
 
 /**
   Update info
- * 
- * 
+ *
+ *
  */
 if (isset($_POST['change']) && $_POST['change'] != '') {
     $change = array();
 
     //Check if post is defined
-    if (isset($_POST['token']) && ($_POST['token']) != '')
+    if (isset($_POST['token']) && ($_POST['token']) != '') {
         $change['token'] = $_POST['token'];
-    else
+    } else {
         $errors['token'] = 'An error occurred please try again later.';
+    }
 
     //New Password
-    if (isset($_POST['new_password']) && ($_POST['new_password']) != '')
+    if (isset($_POST['new_password']) && ($_POST['new_password']) != '') {
         $change['new_password'] = $_POST['new_password'];
-    else
+    } else {
         $errors['new_password'] = 'New Password: this field is required.';
+    }
 
     //Confirm password
-    if (isset($_POST['new_password_confirm']) && $_POST['new_password_confirm'] != '')
+    if (isset($_POST['new_password_confirm']) && $_POST['new_password_confirm'] != '') {
         $change['new_password_confirm'] = $_POST['new_password_confirm'];
-    else
+    } else {
         $errors['new_password_confirm'] = 'Confirm Password: this field is required.';
+    }
 
     //If no erros, lets confirm that the password are equal
     if (!count($errors)) {
-        if ($change['new_password'] != $change['new_password_confirm'])
+        if ($change['new_password'] != $change['new_password_confirm']) {
             $errors['notequal'] = 'The passwords are not a match';
+        }
     }
-
-
 
     if (!count($errors)) {
         unset($change['new_password_confirm']);
         $output = $td->Account_changePassword($change);
-        if (!$output)
+        if (!$output) {
             $statusmsg = $td->getErrorMessage();
-        else {
+        } else  {
             $_SESSION['reset-pass'] = 'SUCCESS!';
         }
     }
 }
 ?>
-<div id="maincol" >    
-    <?php
+<div id="maincol" >
+<?php
     $errormsg = '';
     if (isset($errors) && count($errors)) {
         foreach ($errors as $key => $value) {
             $errormsg .= "<p>$value</p>";
         }
     }
-    ?>
+?>
     <style>
         #errorMSGpass_reset{
             display: none !important;
@@ -74,7 +96,7 @@ if (isset($_POST['change']) && $_POST['change'] != '') {
     </style>
     <?php if (isset($_SESSION['reset-pass']) && $_SESSION['reset-pass'] == 'SUCCESS!'): ?>
         <div class="account_fields_cont box-container">
-            <h1>Reset Password</h1>           
+            <h1>Reset Password</h1>
             <div>Password changed!</div>
         </div>
         <?php
@@ -90,7 +112,7 @@ if (isset($_POST['change']) && $_POST['change'] != '') {
                     <div class="update_fieldblock">
                         <label>New Password:</label>
                         <input  type="password" name="new_password" class="update_field" id="new_password" value="" />
-                        <div class="password-meter">                       
+                        <div class="password-meter">
                             <div class="password-meter-bg">
                                 <div class="password-meter-bar"></div>
                             </div>
@@ -111,7 +133,7 @@ if (isset($_POST['change']) && $_POST['change'] != '') {
             </form>
         </div>
 
-        <!--ACCOUNT FORM CONTAINER-->	
+        <!--ACCOUNT FORM CONTAINER-->
 
         <!--MAP CONTAINER-->
         <div id="right_float_cont">
@@ -126,27 +148,25 @@ if (isset($_POST['change']) && $_POST['change'] != '') {
     <div style="clear:both"></div>
     <script type="text/javascript">
         $(function() {
-        
-          
-                
+
             //Register validation
             var changepassword_form = $("#changepassword_form").validate({
                 rules: {
-                    
-                    new_password     : {  
+
+                    new_password     : {
                         password:true,
-                        //required: true, 
-                        //minlength: 5, 
+                        //required: true,
+                        //minlength: 5,
                         notEqual: "Your password"
                     },
                     new_password_confirm : {
-                        required: true, 
-                        minlength: 5, 
+                        required: true,
+                        minlength: 5,
                         equalTo: "#new_password"
                     }
                 },
-                messages: {                   
-                    new_password :"Password must be at least 6 characters including 1 letter and 1 Alphanumeric Character.",                  
+                messages: {
+                    new_password :"Password must be at least 6 characters including 1 letter and 1 Alphanumeric Character.",
                     new_password_confirm: {
                         required  : "Please provide a password",
                         minlength : "Password must be at least 5 characters long",
@@ -154,14 +174,11 @@ if (isset($_POST['change']) && $_POST['change'] != '') {
                     }
                 }
             });
-            
-            $('#new_password').click(function(){                            
-                changepassword_form.element( "#new_password" )                            
-            });
-		              
 
-            
-            
+            $('#new_password').click(function(){
+                changepassword_form.element( "#new_password" )
+            });
+
             // Handler for .ready() called.
         });
     </script>
