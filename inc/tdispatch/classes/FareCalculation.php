@@ -14,7 +14,7 @@ class FareCalculation {
 
 //put your code here
 
-    public function fare(TDispatch $td, $pickup = array(), $dropoff = array(), $waypoints = array()) {
+    public function fare(TDispatch $td, $pickup_postcode, $dropoff_postcode, $pickup = array(), $dropoff = array(), $waypoints = array()) {
         $data = array(
             "access_token" => $td->getToken()
         );
@@ -25,6 +25,8 @@ class FareCalculation {
         $ch = curl_init();
 
         $dataSend = array(
+            'pickup_postcode' => $pickup_postcode,
+            'dropoff_postcode' => $dropoff_postcode,
             'pickup_location' => $pickup,
             'dropoff_location' => $dropoff,
             'waypoints' => $waypoints

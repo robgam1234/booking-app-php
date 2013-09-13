@@ -69,6 +69,8 @@ if (isset($_POST['update']) && $_POST['update'] === 'Update') {
         $output = $td->Account_setPreferences($userData);
         if (!$output)
             $statusmsg = $td->getErrorMessage();
+        else
+            $_SESSION['updated-data'] = 'SUCCESS!';
     }
 }
 ?>
@@ -97,6 +99,12 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
         }
     }
     ?>
+
+    <?php if (isset($_SESSION['updated-data']) && $_SESSION['updated-data'] == 'SUCCESS!'): ?>
+    <div id="updated_data_message" class="account_fields_cont box-container">
+        <h1>Account information updated</h1>
+    </div>
+    <?php unset($_SESSION['updated-data']); endif ?>
 
     <div class="account_fields_cont box-container">
         <h1>Your Account Details <font><?php if (isset($statusmsg)) echo $statusmsg; ?>&nbsp;</font></h1>
@@ -194,7 +202,7 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                         update_phone    : {
                             NumbersOnly:true,
                             minlength: 8,
-                            maxlength: 13,
+                            maxlength: 15,
                             required: true,
                             notEqual: "Phone"
                         },
@@ -244,6 +252,12 @@ input[type=checkbox].account_checkbox:checked + label.account_label {}
                     }
                 });
 
+                // Remove the notification of updated data notification message
+                setTimeout(function(){
+                    $('#updated_data_message').fadeOut(1000, function(){
+                        $("updated_data_message").hide();
+                    });
+                },3000);
             }
 
 
