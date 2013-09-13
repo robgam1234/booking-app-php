@@ -53,8 +53,8 @@ require_once 'curl.php';
 require_once 'api.php';
 require_once 'bookings.php';
 require_once 'account.php';
-require_once 'location-search.php';
-require_once 'fare-calculation.php';
+require_once 'location_search.php';
+require_once 'fare_calculation.php';
 require_once 'vehicles.php';
 require_once 'drivers.php';
 
