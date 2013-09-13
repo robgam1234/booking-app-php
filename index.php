@@ -20,6 +20,10 @@
 */
 
 
+require_once('inc/tdispatch/config.php');
+Config::validateConfig();
+
+
 ob_start();
 session_start();
 define('INDEX_CALL', 1);
