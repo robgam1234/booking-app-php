@@ -22,19 +22,17 @@ T Dispatch logo, T Dispatch, the T Dispatch T shaped logo are all trademarks of 
 
 #### Setting up
 
-Configuration is stored in `tdispatch_config.php` file:
+Configuration is stored in `config.php` file:
 
 ```php
-$apiConfig = array(
-    'baseURL'=>'http://api.tdispatch.com/',
-    'apiPassengerVersion' => 'v1', //Version of Passenger-API to use
-    'api_key'=>'', // Your Fleet API key
-    'api_cliente_id'=>'',// Your Client ID given by TDispatch support (Note: Client ID is always something like “LXNgW9FfJP@tdispatch.com” (10 characters + @tdispatch.com))
-    'api_secret'=>'', // Your Client Secret
-    'getHomeUrl'=>'', // Your website URL (http://yoursite.com/)
-    'resetPasswordCallbackPage'=>'reset-password', //Callback page for reset-password (reset-password.php)
-    'debug'=>true //(bool) true or false, if you want errors in error_log
-);
+
+	private static $fleetApiKey	= null;     // Your Fleet API key as string
+	private static $apiClientId	= null;     // Your Client ID given by TDispatch support (Note: Client ID is always something like “LXNgW9FfJP@tdispatch.com” (10 characters + @tdispatch.com))
+	private static $apiSecret	= null;     // Your Client Secret
+
+	private static $homeUrl		= 'http://localhost/';	 // URL of your website this scripts are hosted on, i.e. https://yourwebsite.com/
+	private static $debug 		= false;
+
 ```
 
 
