@@ -217,7 +217,8 @@ class Account {
         $info = curl_getinfo($ch);
         curl_close($ch);
 
-        $full_time = json_decode($result, true)['time'];
+        $tmp = json_decode($result, true);
+        $full_time = $tmp['time'];
 
         $parsed_time = array(
             "fulltime" => $full_time,
