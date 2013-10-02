@@ -61,24 +61,24 @@ require_once 'config.php';
 
 class TDispatch {
 
-    protected $api_key;
-    protected $api_cliente_id;
-    protected $api_secret;
-    protected $getHomeUrl;
-    protected $debug;
-    protected $resetPasswordCallbackPage;
-    protected $baseURL;
-    protected $oauthURL = 'passenger/oauth2/';
-    protected $oauth;
-    protected $booking;
-    protected $accounts;
-    protected $location;
-    protected $fareCalculation;
-    protected $vehicles;
-    protected $drivers;
-    protected $api;
-    protected $lastErrorMsg;
-    protected $lastErrorCode;
+    public $api_key;
+    public $api_cliente_id;
+    public $api_secret;
+    public $getHomeUrl;
+    public $debug;
+    public $resetPasswordCallbackPage;
+    public $baseURL;
+    public $oauthURL = 'passenger/oauth2/';
+    public $oauth;
+    public $booking;
+    public $accounts;
+    public $location;
+    public $fareCalculation;
+    public $vehicles;
+    public $drivers;
+    public $api;
+    public $lastErrorMsg;
+    public $lastErrorCode;
 
     /* API FUNCTIONS */
     function __construct() {
