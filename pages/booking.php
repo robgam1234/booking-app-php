@@ -673,7 +673,7 @@ if (!!$customFieldsForm) {
             }else{
                 $("input.book_btn[type=submit]").addClass("book_btn_desabled").removeClass("book_btn_login");
                 $(".login_title_error font").text("");
-                var returnMessage = (data.message.text.lenght > 0) ? data.message.text : "You have selected the same location twice";
+                var returnMessage = data.message.text;
                 $("#map_canvas").html("<p class='error'>"+returnMessage+"</p>");
                 $(".journey_map_info .map_info_txt b").html("");
             }
