@@ -454,7 +454,6 @@ if (!!$customFieldsForm) {
                 <div class="journey_map_info">
                     <div class="map_info_txt"><span>Distance:</span><label>-</label></div>
                     <div class="map_info_txt"><span>Price:</span><label>-</label></div>
-                    <div class="map_info_txt"><span>Arrives in:</span><label>-</label></div>
     <?php if ($td->Account_checkLogin() && isset($_SESSION['post_booking']['booking_form_type']) && ( $_SESSION['post_booking']['booking_form_type']) == 'addposted') $bk_submit = 'Confirm'; ?>
                     <input type="submit" name="book" class="blue-button" value="<?php echo $bk_submit; ?>" />
                 </div>
@@ -587,7 +586,6 @@ if (!!$customFieldsForm) {
                 //Display cost, destination
                 $(".journey_map_info .map_info_txt:eq(0) label").html(data.fare.distance.miles+'miles / '+data.fare.distance.km+' km');
                 $(".journey_map_info .map_info_txt:eq(1) label").html(data.fare.formatted_total_cost);
-                $(".journey_map_info .map_info_txt:eq(2) label").html(data.fare.time_to_wait); //NOTE: Check for arrive time
 
                 //Setup map directions
                 var directionsDisplay;
