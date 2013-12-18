@@ -728,6 +728,9 @@ if (!!$customFieldsForm) {
                 //Check radio buttons
                 var index = $(this).index();
                 $(".vehicle-type-radio > input:eq("+index+")").prop('checked',true).trigger("change");
+				
+				//Refresh map
+               refreshInfoMap();
             }
         });
 

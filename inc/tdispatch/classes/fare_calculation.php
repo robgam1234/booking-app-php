@@ -21,7 +21,7 @@
 
 class FareCalculation {
 
-    public function fare(TDispatch $td, $pickup_postcode, $dropoff_postcode, $pickup = array(), $dropoff = array(), $waypoints = array()) {
+    public function fare(TDispatch $td, $pickup_postcode, $dropoff_postcode, $pickup = array(), $dropoff = array(),$vehicle_type= '', $waypoints = array()) {
         $data = array(
             "access_token" => $td->getToken()
         );
@@ -35,7 +35,9 @@ class FareCalculation {
             'dropoff_postcode' => $dropoff_postcode,
             'pickup_location' => $pickup,
             'dropoff_location' => $dropoff,
+			'car_type' =>$vehicle_type,
             'waypoints' => $waypoints
+			
         );
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
