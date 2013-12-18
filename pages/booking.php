@@ -730,7 +730,7 @@ if (!!$customFieldsForm) {
                 $(".vehicle-type-radio > input:eq("+index+")").prop('checked',true).trigger("change");
 				
 				//Refresh map
-               refreshInfoMap();
+               refreshInfoMap(); 
             }
         });
 
@@ -820,5 +820,15 @@ if (!!$customFieldsForm) {
                 if($("input.minutes:eq(1)").val()=='')
                     $("input.minutes:eq(1)").val(minutes[1]);
             }
-        })
+			
+			$("#date,#hours_0,#hours_1,.minutes").on('change',function(){
+			//Refresh map
+               refreshInfoMap(); 
+		});
+//		$('#hours_0').on('change',function(){
+//			//Refresh map
+//               refreshInfoMap(); 
+//		});
+        });
+		
 </script>

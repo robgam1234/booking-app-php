@@ -295,8 +295,8 @@ class TDispatch {
      * @return (object) json object
      */
 
-    public function FareCalculation_fare($pickup_postcode, $dropoff_postcode, $pickup = array(), $dropoff = array(), $vehicle_type='', $waypoints = array()) {
-        return $this->fareCalculation->fare($this, $pickup_postcode, $dropoff_postcode, $pickup, $dropoff, $vehicle_type, $waypoints);
+    public function FareCalculation_fare($pickup_postcode, $dropoff_postcode, $pickup_time, $pickup = array(), $dropoff = array(), $vehicle_type='', $waypoints = array()) {
+        return $this->fareCalculation->fare($this, $pickup_postcode, $dropoff_postcode,$pickup_time, $pickup, $dropoff, $vehicle_type, $waypoints);
     }
 
     /* END - FareCalculation FUNCTIONS */
