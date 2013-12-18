@@ -825,10 +825,6 @@ if (!!$customFieldsForm) {
 			//Refresh map
                refreshInfoMap(); 
 		});
-//		$('#hours_0').on('change',function(){
-//			//Refresh map
-//               refreshInfoMap(); 
-//		});
         });
 		
 </script>
