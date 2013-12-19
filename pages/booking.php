@@ -31,7 +31,7 @@ $error_msg_booking = '';
 $booking_resp = array();
 $customFieldsForm = $td->Bookings_getCustom();
 
-//
+
 $office_time = $td->Account_getFleetTime();
 $office_hour = $office_time['hour'];
 $office_minutes = $office_time['minutes'];
