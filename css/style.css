@@ -704,6 +704,11 @@ p.nxtFix{padding:0px!important;height:1px!important;}
 /*Notes container*/
 
 /*Journey Map container*/
+#sticky_map_cont {
+    float: left;
+    width: 270px;
+}
+
 #right_float_cont{
     float: left;
     width: 270px;

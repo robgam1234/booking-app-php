@@ -106,7 +106,8 @@ $content = ob_get_clean();
             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery.validate.js"  ></script>
             <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery-ui-1.10.3.custom.min.js"></script>
-            <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/misc.js" ></script>
+           <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery.sticky.js" ></script>
+			<script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/misc.js" ></script>
     </head>
     <body>
         <div id="overlay"></div>
