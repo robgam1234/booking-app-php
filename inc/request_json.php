@@ -94,12 +94,15 @@ switch ($type) {
 		$vehicle_type = $_POST["vehicle_type"];
 		
 		//generate pickup time
-		$temp_pickup_time= $_POST["hours"][0]. ''.$_POST["hours"][1].':'.$_POST["minutes"][0]. ''.$_POST["minutes"][1];
-		$unix_ts=explode('-',str_replace('/','-',$_POST["date"]).'-'.str_replace(':','-',$temp_pickup_time));
-		$unix_ts=mktime($unix_ts[3],$unix_ts[4],0,$unix_ts[1],$unix_ts[0],$unix_ts[2]);
-		
-		$date_temp = date('Y-m-d H:i:s', $unix_ts);
-		$pickup_time =  str_replace(' ','T',$date_temp).'Z';
+		$pickup_date = $_POST["date"];
+        try {
+            list($day, $month, $year) = explode("/", $pickup_date);
+            $hours = join("", $_POST["hours"]);
+            $minutes = join("", $_POST["minutes"]);
+            $pickup_time = date("c", mktime(intval($hours), intval($minutes), 0, intval($month), intval($day), intval($year)));
+        } catch (Exception $e) {
+            $pickup_time = null;
+        } 
 
 		$pickup_postcode = $pickupLocation["postcode"];
         $dropoff_postcode = $dropoffLocation["postcode"];
