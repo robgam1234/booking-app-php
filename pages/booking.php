@@ -263,7 +263,9 @@ function typeCustomField($type, $value) {
 				}
 			}
 		
-
+echo '<pre>';
+//var_dump($booking_arr);
+echo '</pre>';
 //$td = new TDispatch();
 
 $fields = '';
@@ -354,7 +356,10 @@ if (!!$customFieldsForm) {
             foreach ($vehicles as $vehicle) {
                 $v_temp_key = $vehicle['pk'];
                 $v_temp_name = $vehicle['name'];
-                if ($keytypeselected == $v_temp_key) {
+				if(isset($booking_arr['vehicle_type']) &&($booking_arr['vehicle_type']==$v_temp_key)){
+					$active_v = ' active ';
+                    $checked_v = ' checked ';
+				}else if ($keytypeselected == $v_temp_key && !isset($booking_arr['vehicle_type'])) {
                     $active_v = ' active ';
                     $checked_v = ' checked ';
                 }
