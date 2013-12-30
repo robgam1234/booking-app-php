@@ -430,6 +430,14 @@ if (!!$customFieldsForm) {
     </div>
     <!--ALL BOOKING FORMS CONTAINER-->
     <!--MAP CONTAINER-->
+	<script>
+    $(window).load(function(){
+		if ($(window).width() > 600) {
+			$("#right_float_cont").sticky({ topSpacing: 0, bottomSpacing: 330 });
+		}
+    });
+  </script>
+  <div id="sticky_map_cont">
     <div id="right_float_cont">
         <div id="right_ad" class="box-container">
             <h2>Book Online Tips</h2>
@@ -460,6 +468,7 @@ if (!!$customFieldsForm) {
             </div>
 <?php endif; ?>
     </div>
+  </div>
     <!--MAP CONTAINER-->
 </form>
 <script>

@@ -129,6 +129,13 @@ if (isset($form_resp)) {
         if (!$td->Account_checkLogin()) {
             ?>
             <!--LOGIN CONTAINER-->
+			<script>
+    $(window).load(function(){
+		if ($(window).width() > 600) {
+			$("#login_cont").sticky({ topSpacing: 70 });
+		}
+    });
+  </script>
             <div id="login_cont">
                 <!--Login buttons-->
                 <div class="login_btns_cont">
