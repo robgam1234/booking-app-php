@@ -34,16 +34,18 @@ function autocomplete_getLocation(selector,saveON,limit,isPickup,callback){
                 if(data.status === 'OK' && data.locations.length)
                 {
                     cache[ term ] = $.map(data.locations, function(item) {
+						var name = item.name ? item.name : item.address;
                         return {
-                            label: item.address,
-                            value: item.address,
+                            label: name,
+                            value: name,
                             otherdata: item
                         }
                     });                                 
                     response($.map(data.locations, function(item) {
+						var name = item.name ? item.name : item.address;
                         return {
-                            label: item.address,
-                            value: item.address,
+                            label: name,
+                            value: name,
                             otherdata: item
                         }
                     }))                             

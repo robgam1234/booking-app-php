@@ -106,9 +106,9 @@ switch ($type) {
 
 		$pickup_postcode = $pickupLocation["postcode"];
         $dropoff_postcode = $dropoffLocation["postcode"];
-        $pickup_location = array("lat" => $pickupLocation["location"]["lat"], "lng" => $pickupLocation["location"]["lng"]);
-        $dropoff_location = array("lat" => $dropoffLocation["location"]["lat"], "lng" => $dropoffLocation["location"]["lng"]);
-        $fare_calculation = $td->FareCalculation_fare($pickup_postcode, $dropoff_postcode,$pickup_time, $pickup_location, $dropoff_location, $vehicle_type/* ,$waypoints */);
+        $pickup_location = array("lat" => (float)$pickupLocation["location"]["lat"], "lng" => (float)$pickupLocation["location"]["lng"]);
+        $dropoff_location = array("lat" => (float)$dropoffLocation["location"]["lat"], "lng" => (float)$dropoffLocation["location"]["lng"]);
+        $fare_calculation = $td->FareCalculation_fare($pickup_postcode, $dropoff_postcode, $pickup_time, $pickup_location, $dropoff_location, $vehicle_type/* ,$waypoints */);
 
         if ($fare_calculation) {
             $response = $fare_calculation;
