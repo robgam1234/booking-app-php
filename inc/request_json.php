@@ -91,12 +91,24 @@ switch ($type) {
     case 'getquotes':
         $pickupLocation = json_decode(stripslashes($_POST["locationobj"]), true);
         $dropoffLocation = json_decode(stripslashes($_POST["destinationobj"]), true);
+		$vehicle_type = $_POST["vehicle_type"];
+		
+		//generate pickup time
+		$pickup_date = $_POST["date"];
+        try {
+            list($day, $month, $year) = explode("/", $pickup_date);
+            $hours = join("", $_POST["hours"]);
+            $minutes = join("", $_POST["minutes"]);
+            $pickup_time = date("c", mktime(intval($hours), intval($minutes), 0, intval($month), intval($day), intval($year)));
+        } catch (Exception $e) {
+            $pickup_time = null;
+        } 
 
-        $pickup_postcode = $pickupLocation["postcode"];
+		$pickup_postcode = $pickupLocation["postcode"];
         $dropoff_postcode = $dropoffLocation["postcode"];
         $pickup_location = array("lat" => $pickupLocation["location"]["lat"], "lng" => $pickupLocation["location"]["lng"]);
         $dropoff_location = array("lat" => $dropoffLocation["location"]["lat"], "lng" => $dropoffLocation["location"]["lng"]);
-        $fare_calculation = $td->FareCalculation_fare($pickup_postcode, $dropoff_postcode, $pickup_location, $dropoff_location/* ,$waypoints */);
+        $fare_calculation = $td->FareCalculation_fare($pickup_postcode, $dropoff_postcode,$pickup_time, $pickup_location, $dropoff_location, $vehicle_type/* ,$waypoints */);
 
         if ($fare_calculation) {
             $response = $fare_calculation;
