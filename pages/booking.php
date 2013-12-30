@@ -31,7 +31,7 @@ $error_msg_booking = '';
 $booking_resp = array();
 $customFieldsForm = $td->Bookings_getCustom();
 
-//
+
 $office_time = $td->Account_getFleetTime();
 $office_hour = $office_time['hour'];
 $office_minutes = $office_time['minutes'];
@@ -253,28 +253,38 @@ function typeCustomField($type, $value) {
             break;
     }
 }
-
-//$td = new TDispatch();
-
+		//get cookie stored data
+		$cookie_data= json_decode(stripcslashes($_COOKIE['myCookie']),true);
+            setcookie('myCookie', '', time()-3600); //remove cookie
+			$booking_arr= array();
+			if($cookie_data!=NULL){
+			foreach($cookie_data as $val){
+				$booking_arr[$val['name']] =$val['value'];
+				}
+			}
+		
 $fields = '';
+
 if (!!$customFieldsForm) {
     foreach ($customFieldsForm as $customField) {
-        $fields .="<div style='clear:both; padding: 10px 0px;'>
+		$field_value = (isset($booking_arr['custom_' . $customField['internal_name']])? $booking_arr['custom_' . $customField['internal_name']]:valueReturnBooking('custom_' . $customField['internal_name']));
+      
+		$fields .="<div style='clear:both; padding: 10px 0px;'>
                     <label class='destination_subtitle'>" . $customField['name'] . ": </label>
                     <div class='location-block'>
-                        <input required type='text' class='' name='custom_" . $customField['internal_name'] . "' value='" . valueReturnBooking('custom_' . $customField['internal_name']) . "'  />
+                        <input required type='text' class='' name='custom_" . $customField['internal_name'] . "' value='" . $field_value . "'  />
                     </div>
                    </div>";
     }
     $fields = '' . $fields . '';
 }
-
 ?>
 <form id="booking_form" name="booking_form" class="booking_form journey_form" method="post" autocomplete="off" action="/booking" >
     <input type="hidden" name="booking_form_type" value="<?php echo $booking_form_type; ?>" />
     <?php if (valueReturnBooking('bookingPk') != '') : ?>
         <input type = "hidden" name = "bookingPk" value = "<?php echo valueReturnBooking('bookingPk'); ?>" />
 <?php endif; ?>
+			
     <div id="book_forms_cont">
         <!--Location/Destination container-->
         <div id="addresses_cont" class="box-container">
@@ -282,18 +292,18 @@ if (!!$customFieldsForm) {
             <label class="location_subtitle">Pickup address: </label>
             <div class="location-block">
                 <!--Location select -->
-                <input type="text" name="location" class="journey_field" id="journey_location" value="<?php echo valueReturnBooking('location'); ?>" />
+                <input type="text" name="location" class="journey_field" id="journey_location" value="<?php echo (isset($booking_arr['location'])? $booking_arr['location']: valueReturnBooking('location'));  ?>" />
 
-                <input type="hidden" id="journey_location_obj" name="locationobj"  value='<?php echo valueReturnBooking('locationobj'); ?>' />
+                <input type="hidden" id="journey_location_obj" name="locationobj"  value='<?php echo (isset($booking_arr['locationobj'])? $booking_arr['locationobj']:valueReturnBooking('locationobj')); ?>' />
                 <div class="location_arrow">&nbsp;<div class="location_tooltip"><font>Show regular locations</font></div></div>
                 <!--Location select -->
             </div>
             <div class="location-block">
                 <!--Destination select -->
                 <label class="destination_subtitle">Destination: </label>
-                <input type="text" name="destination" class="journey_field" id="journey_destination"  value="<?php echo valueReturnBooking('destination'); ?>"  />
+                <input type="text" name="destination" class="journey_field" id="journey_destination"  value="<?php echo (isset($booking_arr['destination'])? $booking_arr['destination']: valueReturnBooking('destination')); ?>"  />
 
-                <input type="hidden" id="journey_destination_obj" name="destinationobj" value='<?php echo valueReturnBooking('destinationobj'); ?>' />
+                <input type="hidden" id="journey_destination_obj" name="destinationobj" value='<?php echo (isset($booking_arr['destinationobj'])? $booking_arr['destinationobj']: valueReturnBooking('destinationobj')); ?>' />
                 <div  class="location_arrow">&nbsp;<div class="location_tooltip"><font>Show regular locations</font></div></div>
                 <!--Destination select -->
             </div>
@@ -340,7 +350,10 @@ if (!!$customFieldsForm) {
             foreach ($vehicles as $vehicle) {
                 $v_temp_key = $vehicle['pk'];
                 $v_temp_name = $vehicle['name'];
-                if ($keytypeselected == $v_temp_key) {
+				if(isset($booking_arr['vehicle_type']) &&($booking_arr['vehicle_type']==$v_temp_key)){
+					$active_v = ' active ';
+                    $checked_v = ' checked ';
+				}else if ($keytypeselected == $v_temp_key && !isset($booking_arr['vehicle_type'])) {
                     $active_v = ' active ';
                     $checked_v = ' checked ';
                 }
@@ -387,29 +400,29 @@ if (!!$customFieldsForm) {
             <h2>Time &amp; Date</h2>
             <div class="book_date" >
                 <!-- <label>Date:</label> -->
-                <input id="date" type="text" name="date" value="<?php echo valueReturnBooking('date'); ?>" />
+                <input id="date" type="text" name="date" value="<?php echo (isset($booking_arr['date'])? $booking_arr['date']:valueReturnBooking('date')); ?>" />
             </div>
             <div class="book_time" >
                 <!-- <label>Time:</label> -->
                 <div class="timeblock first">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly" name="hours[0]" id="hours_0" value="<?php echo valueReturnBooking('hours[0]'); ?>"  />
+                    <input type="text" class="hours numberOnly" name="hours[0]" id="hours_0" value="<?php echo (isset($booking_arr['hours[0]'])? $booking_arr['hours[0]']: valueReturnBooking('hours[0]')); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo valueReturnBooking('hours[1]') ?>"  />
+                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo (isset($booking_arr['hours[1]'])? $booking_arr['hours[1]']: valueReturnBooking('hours[1]')); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="splitblock" >:</div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="minutes numberOnly" name="minutes[0]" value="<?php echo valueReturnBooking('minutes[0]'); ?>"  />
+                    <input type="text" class="minutes numberOnly" name="minutes[0]" value="<?php echo (isset($booking_arr['minutes[0]'])? $booking_arr['minutes[0]']: valueReturnBooking('minutes[0]')); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="minutes numberOnly" name="minutes[1]" value="<?php echo valueReturnBooking('minutes[1]'); ?>"  />
+                    <input type="text" class="minutes numberOnly" name="minutes[1]" value="<?php echo (isset($booking_arr['minutes[1]'])? $booking_arr['minutes[1]']: valueReturnBooking('minutes[1]')); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
             </div>
@@ -425,7 +438,7 @@ if (!!$customFieldsForm) {
             <a href="javascript:void(0);" class="close" title="Hide"></a>
             <h2>Notes</h2>
             <p class="subtitle">Please provide the driver with any additonal information they may require for your journey.</p>
-            <textarea rows="4" cols="50" name="extra_instructions" id="extra_instructions"><?php echo valueReturnBooking('extra_instructions'); ?></textarea>
+            <textarea rows="4" cols="50" name="extra_instructions" id="extra_instructions"><?php echo (isset($booking_arr['extra_instructions'])? $booking_arr['extra_instructions']: valueReturnBooking('extra_instructions')); ?></textarea>
         </div>
     </div>
     <!--ALL BOOKING FORMS CONTAINER-->
@@ -543,7 +556,6 @@ if (!!$customFieldsForm) {
             var emptyFields = $thisObj.filter(function() {
                 return $.trim(this.value) === "";
             });
-
             if (!emptyFields.length){
                 if( FieldValid($("#date"),"blank","Plese specify your pickup date") ){
                     //All destinations are set and date is not blank

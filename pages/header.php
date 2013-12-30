@@ -19,7 +19,6 @@
  ******************************************************************************
 */
 
-
 //$td = new TDispatch();
 function valueReturnForm($key, $number = false) {
     if (!isset($_SESSION))
@@ -465,6 +464,9 @@ if (isset($form_resp)) {
 
 
             $('#login-account').click(function(){
+				var data = JSON.stringify($(".booking_form").serializeArray());
+				document.cookie = 'myCookie='+data+';path=/;';
+				//return false;
                 $('#login_submit').trigger('click');
             });
 
