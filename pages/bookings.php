@@ -53,8 +53,9 @@ if (!$td->Account_checkLogin()) {
                     (($booking["status"] == "incoming" || $booking["status"] == "from_partner" || $booking["status"] == "dispatched" || $booking["status"] == "confirmed") ? '<a class="bookings_cancel" pk="' . $booking["pk"] . '">Cancel</a>' : '' ) .
                     /* (($booking["status"] == "incoming") ? '<a href="booking?fedit&pk=' . $booking["pk"] . '">Edit</a>' : '' ) . */
                     (($booking["status"] == "active") ? '<a href="tracking?pk=' . $booking["pk"] . '">Track</a>' : '') .
-                    (($booking["status"] == "completed") ? '<a href="receipt?pk=' . $booking["key"] . '">Download Receipt</a>' : '') .
-                    '</td>';
+                    (($booking["status"] == "completed") ? '<a href="receipt?pk=' . $booking["key"] . '">Download Receipt</a>' : '').
+                    (($booking["status"] == "cancelled") ? 'Cancelled':'').
+					'</td>';
                     echo '</tr>';
                 }
                 echo '</table>';
@@ -122,6 +123,7 @@ if (!$td->Account_checkLogin()) {
                         $('.booking_table_rows').removeClass('booking-highlight');
                         $('#bookings-cancel-confirmation').fadeOut(1000, function(){
                             $('#bookings-cancel-confirmation-notes').val('');
+							window.location.href=window.location.href;
                         });
                     });
                 });
@@ -142,7 +144,7 @@ if (!$td->Account_checkLogin()) {
     unset($_SESSION['booking_complete']);
 endif;
 ?>
-
+		
 
     });
         </script>
@@ -165,7 +167,7 @@ endif;
         <a href="javascript:void(0);" id="bookings-cancel-confirmation-no" class="blue-button">No</a>
     </div>
     <div id="bookings-completed-message" class="box-container" style="display: none;">
-        <p>Your booking is completed!</p>
+        <p>Your booking has been placed!</p>
     </div>
 </div>
 
