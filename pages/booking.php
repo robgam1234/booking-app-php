@@ -263,11 +263,6 @@ function typeCustomField($type, $value) {
 				}
 			}
 		
-echo '<pre>';
-//var_dump($booking_arr);
-echo '</pre>';
-//$td = new TDispatch();
-
 $fields = '';
 
 if (!!$customFieldsForm) {
@@ -283,7 +278,6 @@ if (!!$customFieldsForm) {
     }
     $fields = '' . $fields . '';
 }
-//var_dump($fields);
 ?>
 <form id="booking_form" name="booking_form" class="booking_form journey_form" method="post" autocomplete="off" action="/booking" >
     <input type="hidden" name="booking_form_type" value="<?php echo $booking_form_type; ?>" />
@@ -553,7 +547,6 @@ if (!!$customFieldsForm) {
             var emptyFields = $thisObj.filter(function() {
                 return $.trim(this.value) === "";
             });
-			console.log(emptyFields.length);
             if (!emptyFields.length){
                 if( FieldValid($("#date"),"blank","Plese specify your pickup date") ){
                     //All destinations are set and date is not blank

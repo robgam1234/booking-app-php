@@ -458,7 +458,6 @@ if (isset($form_resp)) {
 
             $('#login-account').click(function(){
 				var data = JSON.stringify($(".booking_form").serializeArray());
-			//	console.log(data);
 				document.cookie = 'myCookie='+data+';path=/;';
 				//return false;
                 $('#login_submit').trigger('click');
