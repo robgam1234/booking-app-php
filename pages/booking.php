@@ -227,9 +227,11 @@ if (isset($_POST['booking_form_type'])) {
 function valueReturnBooking($key, $default = '') {
     global $booking_resp;
     $value = '';
-    if (isset($_SESSION['post_booking'][$key])) {
+    if (isset($_SESSION['post_booking'][$key]) && !is_array($_SESSION['post_booking'][$key])) {
         $value = stripslashes($_SESSION['post_booking'][$key]);
-    } elseif (isset($booking_resp[$key])) {
+	}elseif(isset($_SESSION['post_booking'][$key]) && is_array($_SESSION['post_booking'][$key])){
+		$value = $_SESSION['post_booking'][$key];
+	} elseif (isset($booking_resp[$key])) {
         $value = $booking_resp[$key];
     } else {
         $value = stripslashes($default);
@@ -404,25 +406,30 @@ if (!!$customFieldsForm) {
             </div>
             <div class="book_time" >
                 <!-- <label>Time:</label> -->
+				<?php 
+				$hours_values = valueReturnBooking('hours');
+				$minutes_values = valueReturnBooking('minutes');
+				?>
                 <div class="timeblock first">
+					
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly" name="hours[0]" id="hours_0" value="<?php echo (isset($booking_arr['hours[0]'])? $booking_arr['hours[0]']: valueReturnBooking('hours[0]')); ?>"  />
+                    <input type="text" class="hours numberOnly" name="hours[0]" id="hours_0" value="<?php echo (isset($booking_arr['hours[0]'])? $booking_arr['hours[0]']: $hours_values[0]); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo (isset($booking_arr['hours[1]'])? $booking_arr['hours[1]']: valueReturnBooking('hours[1]')); ?>"  />
+                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo (isset($booking_arr['hours[1]'])? $booking_arr['hours[1]']: $hours_values[1]); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="splitblock" >:</div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="minutes numberOnly" name="minutes[0]" value="<?php echo (isset($booking_arr['minutes[0]'])? $booking_arr['minutes[0]']: valueReturnBooking('minutes[0]')); ?>"  />
+                    <input type="text" class="minutes numberOnly" name="minutes[0]" value="<?php echo (isset($booking_arr['minutes[0]'])? $booking_arr['minutes[0]']: $minutes_values[0]); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="minutes numberOnly" name="minutes[1]" value="<?php echo (isset($booking_arr['minutes[1]'])? $booking_arr['minutes[1]']: valueReturnBooking('minutes[1]')); ?>"  />
+                    <input type="text" class="minutes numberOnly" name="minutes[1]" value="<?php echo (isset($booking_arr['minutes[1]'])? $booking_arr['minutes[1]']: $minutes_values[1]); ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
             </div>
