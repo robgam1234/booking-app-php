@@ -48,7 +48,7 @@ if (!$td->Account_checkLogin()) {
                     echo '<tr class="booking_table_rows" book_pk="' . $booking["pk"] . '">';
                     echo '<td>' . $booking["pickup_location"]["address"] . '</td>';
                     echo '<td>' . $booking["dropoff_location"]["address"] . '</td>';
-                    echo '<td class="bookings_datetime">' . date('Y-m-d', strtotime($booking["pickup_time"])) . '</td>';
+                    echo '<td class="bookings_datetime">' . date('Y/m/d H:i', strtotime($booking["pickup_time"])) . '</td>';
                     echo '<td class="bookings_status">' .
                     (($booking["status"] == "incoming" || $booking["status"] == "from_partner" || $booking["status"] == "dispatched" || $booking["status"] == "confirmed") ? '<a class="bookings_cancel" pk="' . $booking["pk"] . '">Cancel</a>' : '' ) .
                     /* (($booking["status"] == "incoming") ? '<a href="booking?fedit&pk=' . $booking["pk"] . '">Edit</a>' : '' ) . */
