@@ -95,10 +95,10 @@ if (isset($form_resp)) {
 <!--HEADER SECTION-->
 <div id="header_out" >
     <div id="header" >
-        <div class="logo"><a href="/"><img src="<?php echo $td->getHomeUrl(); ?>images/taxi-cars_logo.png" border="0" alt="Amber Cars"/></a></div>
+        <div class="logo"><a href="<?php echo $td->getHomeUrl(); ?>"><img src="<?php echo $td->getHomeUrl(); ?>images/taxi-cars_logo.png" border="0" alt="Amber Cars"/></a></div>
         <!--MAIN NAV-->
         <ul id="head_nav">
-            <li><a class="<?php echo ((isset($page) && $page === 'home') ? "active" : ''); ?>" href="/">Book a taxi</a></li>
+            <li><a class="<?php echo ((isset($page) && $page === 'home') ? "active" : ''); ?>" href="<?php echo $td->getHomeUrl(); ?>">Book a taxi</a></li>
             <li><a href="mobile">Mobile apps</a></li>
             <li ><a href="about">About us</a></li>
             <?php if (isset($loggedin) && $loggedin): ?>
@@ -318,7 +318,7 @@ if (isset($form_resp)) {
                     });
 
                     var button = this;
-                    $.post("/",{
+                    $.post("<?php echo $td->getHomeUrl(); ?>",{
                         JSON:true,
                         TYPE:'resetPassword',
                         email:$('#login_emailreset').val()

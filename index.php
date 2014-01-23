@@ -103,7 +103,9 @@ $content = ob_get_clean();
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
             <link rel="stylesheet" href="<?php echo $td->getHomeUrl(); ?>css/style.css" type="text/css" />
             <link rel="stylesheet" href="<?php echo $td->getHomeUrl(); ?>css/tdispatch-squareball/jquery-ui-1.10.3.custom.css"  type="text/css"/>
-
+			<script type="text/javascript">
+			var homeUrl = "<?php echo $td->getHomeUrl(); ?>";
+			</script>
             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery.validate.js"  ></script>
             <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery-ui-1.10.3.custom.min.js"></script>

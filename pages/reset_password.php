@@ -107,7 +107,7 @@ if (isset($_POST['change']) && $_POST['change'] != '') {
         <div class="account_fields_cont box-container">
             <h1>Reset Password  <font style="color:red"><?php if (isset($statusmsg)) echo $statusmsg; ?>&nbsp;</font></h1>
             <div style="color:red;"><?php echo $errormsg; ?></div><br/>
-            <form id="changepassword_form" name="changepassword_form" class="update_form" method="post" autocomplete="off" action="/reset-password">
+            <form id="changepassword_form" name="changepassword_form" class="update_form" method="post" autocomplete="off" action="<?php echo $td->getHomeUrl(); ?>reset-password">
                 <div class="wrapper">
                     <div class="update_fieldblock">
                         <label>New Password:</label>

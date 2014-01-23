@@ -100,7 +100,7 @@ if (isset($_POST['booking_form_type'])) {
                     unset($_SESSION['post_booking']);
                     $_SESSION['booking_complete'] = $bk_resp['pk'];
                     //$_SESSION['booking_complete'] = array('bookingPk' => $bk_resp['bookingPk'], 'booking' => json_encode($bk_resp));
-                    header('Location:/bookings');
+                    header('Location:'. $td->getHomeUrl().'bookings');
                 } else {
                     $error_msg_booking = $td->getErrorMessage();
                 }
@@ -172,7 +172,7 @@ if (isset($_POST['booking_form_type'])) {
                     unset($_SESSION['post_booking']);
                     $_SESSION['booking_complete'] = $bk_resp['pk'];
                     //$_SESSION['booking_complete'] = array('bookingPk' => $bk_resp['bookingPk'], 'booking' => json_encode($bk_resp));
-                    header('Location:/bookings');
+                    header('Location:'.$td->getHomeUrl().'bookings');
                 } else {
                     $error_msg_booking = $td->getErrorMessage();
                 }
@@ -279,7 +279,7 @@ if (!!$customFieldsForm) {
     $fields = '' . $fields . '';
 }
 ?>
-<form id="booking_form" name="booking_form" class="booking_form journey_form" method="post" autocomplete="off" action="/booking" >
+<form id="booking_form" name="booking_form" class="booking_form journey_form" method="post" autocomplete="off" action="<?php echo $td->getHomeUrl(); ?>booking" >
     <input type="hidden" name="booking_form_type" value="<?php echo $booking_form_type; ?>" />
     <?php if (valueReturnBooking('bookingPk') != '') : ?>
         <input type = "hidden" name = "bookingPk" value = "<?php echo valueReturnBooking('bookingPk'); ?>" />
@@ -590,7 +590,7 @@ if (!!$customFieldsForm) {
             });
 
             //Do quote request
-            $.post("/",data,function(data){
+            $.post("<?php echo $td->getHomeUrl(); ?>",data,function(data){
                 $("#right_ad").fadeOut(function(){
                     $("#journey_map").fadeIn(function(){
                         //Draw map

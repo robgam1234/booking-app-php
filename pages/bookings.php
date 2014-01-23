@@ -112,7 +112,7 @@ if (!$td->Account_checkLogin()) {
 
                 $('#bookings-cancel-confirmation-yes').click(function(){
                     var pk = $(this).attr('pk');
-                    $.post("/",{
+                    $.post("<?php echo $td->getHomeUrl(); ?>",{
                         JSON:true,
                         TYPE:'cancelBooking',
                         bookingPk:pk,

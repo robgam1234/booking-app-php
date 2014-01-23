@@ -24,7 +24,7 @@ function autocomplete_getLocation(selector,saveON,limit,isPickup,callback){
                 return;
             }
                         
-            $.post("/",{
+            $.post(homeUrl,{
                 JSON:true,
                 TYPE:'getLocation',
                 location:term,
