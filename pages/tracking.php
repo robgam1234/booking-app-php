@@ -62,7 +62,7 @@ if (!$td->Account_checkLogin()) {
             var pk = getURLParameter("pk");
             if($(".vehicle_tracking_page").length){
                 //Read url paramteres
-                $.post("/",{
+                $.post("<?php echo $td->getHomeUrl(); ?>",{
                     JSON:true,
                     TYPE:'getBooking',
                     bookingPk:pk
@@ -117,7 +117,7 @@ if (!$td->Account_checkLogin()) {
             if($(".vehicle_tracking_page").length)
             {
                 //Load maps first time
-                $.post("/",{
+                $.post("<?php echo $td->getHomeUrl(); ?>",{
                     JSON:true,
                     TYPE:'getTrack',
                     bookingPk:pk
@@ -147,7 +147,7 @@ if (!$td->Account_checkLogin()) {
                 },"json");
                 //Reload map marker and location every 30 sec
                 setInterval(function(){
-                    $.post("/",{
+                    $.post("<?php echo $td->getHomeUrl(); ?>",{
                         JSON:true,
                         TYPE:'getTrack',
                         bookingPk:pk
