@@ -1083,6 +1083,9 @@ span.track_cost{width:auto;margin:0px 10px 0px 0px;}
     width: 636px;
     z-index: 101;
     border-radius: 0px;
+	height: 145px;
+	overflow-x: hidden;
+    overflow-y: auto;
     /*   color: #555555;
       font-family: 'Open Sans',sans-serif;
       font-size: 16px;
