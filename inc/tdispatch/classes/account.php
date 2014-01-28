@@ -259,8 +259,8 @@ class Account {
         curl_setopt($ch, CURLOPT_URL, $url);
         $dataSend = array(
             "email" => $email,
-            "confirm_url"=>$td->getHomeUrl().$td->resetPasswordCallbackPage.'/?token={token}'
-        );
+            "confirm_url"=>$td->getHomeUrl().$td->resetPasswordCallbackPage.'?token={token}'
+        ); 
         curl_setopt($ch, CURLOPT_POST, count($dataSend));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataSend));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
