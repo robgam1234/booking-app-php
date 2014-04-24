@@ -21,53 +21,53 @@
 
 class Config {
 
-	private static $fleetApiKey	= null;
-	private static $apiClientId	= null;
-	private static $apiSecret	= null;
+    private static $fleetApiKey	= null;
+    private static $apiClientId	= null;
+    private static $apiSecret	= null;
 
-	private static $homeUrl		= 'http://localhost/';	 // URL of your website this scripts are hosted on, i.e. https://yourwebsite.com/
-	private static $debug 		= false;
-
-
-
-	// ************* NO NEED TO TOUCH ANY CODE BELOW THIS LINE **************************/
-
-	private static $apiBaseUrl 		  = 'https://api.tdispatch.com/';
-	private static $resetPasswordCallbackPage = 'reset-password';
+    private static $homeUrl		= 'http://localhost/';	 // URL of your website this scripts are hosted on, i.e. https://yourwebsite.com/
+    private static $debug 		= false;
 
 
-	public static function validateConfig() {
-		if( self::$fleetApiKey === null ) {
-			die("Configuration Error: No fleetApiKey provided");
-		}
-		if( self::$apiClientId === null ) {
-			die("Configuration Error: No fleetApiKey provided");
-		}
-		if( self::$apiSecret === null ) {
-			die("Configuration Error: No apiSecret provided");
-		}
-	}
 
-	public static function getFleetApiKey() {
-		return self::$fleetApiKey;
-	}
-	public static function getApiClientId() {
-		return self::$apiClientId;
-	}
-	public static function getApiSecret() {
-		return self::$apiSecret;
-	}
-	public static function getHomeUrl() {
-		return self::$homeUrl;
-	}
-	public static function getApiBaseUrl() {
-		return self::$apiBaseUrl;
-	}
-	public static function getResetPasswordCallbackPage() {
-		return self::$resetPasswordCallbackPage;
-	}
-	public static function isDebug() {
-		return self::$debug;
-	}
+    // ************* NO NEED TO TOUCH ANY CODE BELOW THIS LINE **************************/
+
+    private static $apiBaseUrl 		  = 'https://api.tdispatch.com/';
+    private static $resetPasswordCallbackPage = 'reset-password';
+
+
+    public static function validateConfig() {
+        if( self::$fleetApiKey === null ) {
+            die("Configuration Error: No fleetApiKey provided");
+        }
+        if( self::$apiClientId === null ) {
+            die("Configuration Error: No fleetApiKey provided");
+        }
+        if( self::$apiSecret === null ) {
+            die("Configuration Error: No apiSecret provided");
+        }
+    }
+
+    public static function getFleetApiKey() {
+        return self::$fleetApiKey;
+    }
+    public static function getApiClientId() {
+        return self::$apiClientId;
+    }
+    public static function getApiSecret() {
+        return self::$apiSecret;
+    }
+    public static function getHomeUrl() {
+        return self::$homeUrl;
+    }
+    public static function getApiBaseUrl() {
+        return self::$apiBaseUrl;
+    }
+    public static function getResetPasswordCallbackPage() {
+        return self::$resetPasswordCallbackPage;
+    }
+    public static function isDebug() {
+        return self::$debug;
+    }
 
 }

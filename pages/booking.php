@@ -577,9 +577,72 @@ if (!!$customFieldsForm) {
                 }
             }
         }
+        var autocompletePickUP = new google.maps.places.Autocomplete(document.getElementById('journey_location'));
+        var autocompleteDestination = new google.maps.places.Autocomplete(document.getElementById('journey_destination'));
 
-        autocomplete_getLocation("#journey_location",'#journey_location_obj',10,true,refreshInfoMap);
-        autocomplete_getLocation("#journey_destination",'#journey_destination_obj',10,false,refreshInfoMap);
+        // Listener for pickup autocomplete
+        google.maps.event.addListener(autocompletePickUP , 'place_changed', function() {
+            var result = autocompletePickUP.getPlace();
+            var journey_destination_obj = {};
+            journey_destination_obj.town = "";
+            journey_destination_obj.hash = "";
+            journey_destination_obj.name = result.formatted_address;
+            journey_destination_obj.street = "";
+            journey_destination_obj.source = "regular-locations";
+            journey_destination_obj.door_number = "";
+            journey_destination_obj.postcode = "";
+            journey_destination_obj.address = "";
+            journey_destination_obj.type = "frequent";
+            journey_destination_obj.location = {};
+            journey_destination_obj.location.lat = result.geometry.location.k;
+            journey_destination_obj.location.lng = result.geometry.location.A;
+            $("#journey_location").val(result.formatted_address);
+            $("#journey_location_obj").val(JSON.stringify(journey_destination_obj));
+            if (checkAddressForQuote() === true){
+                gQuote();
+            }
+
+        });
+        // Listener for destination autocomplete
+        google.maps.event.addListener(autocompleteDestination , 'place_changed', function() {
+            var result = autocompleteDestination.getPlace();
+            var journey_destination_obj = {};
+            journey_destination_obj.town = "";
+            journey_destination_obj.hash = "";
+            journey_destination_obj.name = result.formatted_address;
+            journey_destination_obj.street = "";
+            journey_destination_obj.source = "regular-locations";
+            journey_destination_obj.door_number = "";
+            journey_destination_obj.postcode = "";
+            journey_destination_obj.address = "";
+            journey_destination_obj.type = "frequent";
+            journey_destination_obj.location = {};
+            journey_destination_obj.location.lat = result.geometry.location.k;
+            journey_destination_obj.location.lng = result.geometry.location.A;
+            $("#journey_destination").val(result.formatted_address);
+            $("#journey_destination_obj").val(JSON.stringify(journey_destination_obj));
+            if (checkAddressForQuote() === true){
+                gQuote();
+            }
+
+        });
+
+        /**
+         * Check are filled address fields for quote
+         * @returns {boolean}
+         */
+        function checkAddressForQuote(){
+            if ( $("#journey_destination").val() == '' || $("#journey_destination_obj").val() == '' || $("#journey_location").val() == '' || $("#journey_location_obj").val() == ''){
+                return false;
+            }
+            return true;
+        }
+
+        $("#booking_form").keypress(function (event) {if (event.keyCode == 13) {return false;}})
+
+
+//        autocomplete_getLocation("#journey_location",'#journey_location_obj',10,true,refreshInfoMap);
+//        autocomplete_getLocation("#journey_destination",'#journey_destination_obj',10,false,refreshInfoMap);
 
         refreshInfoMap();
         //Get quote function

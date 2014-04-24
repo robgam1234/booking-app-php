@@ -111,8 +111,9 @@ $content = ob_get_clean();
             <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery-ui-1.10.3.custom.min.js"></script>
            <script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/jquery.sticky.js" ></script>
 			<script type="text/javascript" src="<?php echo $td->getHomeUrl(); ?>js/misc.js" ></script>
+            <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     </head>
-    <body>
+    <body onload="initialize()">
         <div id="overlay"></div>
         <?php #include('pages/header.php'); ?>
         <?php echo $header; ?>
@@ -124,14 +125,5 @@ $content = ob_get_clean();
         function initialize() {
 
         }
-
-        function loadScript() {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize';
-            document.body.appendChild(script);
-        }
-        window.onload = loadScript;
-
     </script>
 </html>
