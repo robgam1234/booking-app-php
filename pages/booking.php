@@ -33,6 +33,7 @@ $customFieldsForm = $td->Bookings_getCustom();
 
 
 $office_time = $td->Account_getFleetTime();
+$office_timezone = $office_time['timezone'];
 $office_hour = $office_time['hour'];
 $office_minutes = $office_time['minutes'];
 $office_date = $office_time['date'];
@@ -406,30 +407,31 @@ if (!!$customFieldsForm) {
             </div>
             <div class="book_time" >
                 <!-- <label>Time:</label> -->
-				<?php 
-				$hours_values = valueReturnBooking('hours');
-				$minutes_values = valueReturnBooking('minutes');
-				?>
+                <?php
+                date_default_timezone_set($office_timezone);
+                $min_hours  = str_split(date('H',strtotime($office_time['fulltime'])));
+                $min_minutes  = str_split($office_minutes);
+                ?>
                 <div class="timeblock first">
 					
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly" name="hours[0]" id="hours_0" value="<?php echo (isset($booking_arr['hours[0]'])? $booking_arr['hours[0]']: $hours_values[0]); ?>"  />
+                    <input type="text" class="hours numberOnly" name="hours[0]" id="hours_0" value="<?php echo $min_hours[0]; ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo (isset($booking_arr['hours[1]'])? $booking_arr['hours[1]']: $hours_values[1]); ?>"  />
+                    <input type="text" class="hours numberOnly"  name="hours[1]"  id="hours_1" value="<?php echo $min_hours[1]; ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="splitblock" >:</div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="minutes numberOnly" name="minutes[0]" value="<?php echo (isset($booking_arr['minutes[0]'])? $booking_arr['minutes[0]']: $minutes_values[0]); ?>"  />
+                    <input type="text" class="minutes numberOnly" name="minutes[0]" value="<?php echo $min_minutes[0]; ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
                 <div class="timeblock">
                     <a href="javascript:;" class="add" >&laquo;</a>
-                    <input type="text" class="minutes numberOnly" name="minutes[1]" value="<?php echo (isset($booking_arr['minutes[1]'])? $booking_arr['minutes[1]']: $minutes_values[1]); ?>"  />
+                    <input type="text" class="minutes numberOnly" name="minutes[1]" value="<?php echo $min_minutes[1]; ?>"  />
                     <a href="javascript:;" class="rem" >&raquo;</a>
                 </div>
             </div>
@@ -887,30 +889,30 @@ if (!!$customFieldsForm) {
 
             //        //Set hours
 
-            hours = String(<?php echo $office_hour; ?>).split("");
-            if(hours.length == 1) {
-                $("input.hours:eq(0)").val('0');
-                $("input.hours:eq(1)").val(hours[0]);
-            }
-            else{
-                if($("input.hours:eq(0)").val()=='')
-                    $("input.hours:eq(0)").val(hours[0]);
-                if($("input.hours:eq(1)").val()=='')
-                    $("input.hours:eq(1)").val(hours[1]);
-            }
-
+<!--            hours = String(--><?php //echo $office_hour; ?><!--).split("");-->
+<!--            if(hours.length == 1) {-->
+<!--                $("input.hours:eq(0)").val('0');-->
+<!--                $("input.hours:eq(1)").val(hours[0]);-->
+<!--            }-->
+<!--            else{-->
+<!--                if($("input.hours:eq(0)").val()=='')-->
+<!--                    $("input.hours:eq(0)").val(hours[0]);-->
+<!--                if($("input.hours:eq(1)").val()=='')-->
+<!--                    $("input.hours:eq(1)").val(hours[1]);-->
+<!--            }-->
+<!---->
             //Set minutes
-            minutes = String(<?php echo $office_minutes; ?>).split("");
-            if(minutes.length == 1) {
-                $("input.minutes:eq(0)").val('0');
-                $("input.minutes:eq(1)").val(minutes[0]);
-            }
-            else{
-                if($("input.minutes:eq(0)").val()=='')
-                    $("input.minutes:eq(0)").val(minutes[0]);
-                if($("input.minutes:eq(1)").val()=='')
-                    $("input.minutes:eq(1)").val(minutes[1]);
-            }
+<!--            minutes = String(--><?php //echo $office_minutes; ?><!--).split("");-->
+<!--            if(minutes.length == 1) {-->
+<!--                $("input.minutes:eq(0)").val('0');-->
+<!--                $("input.minutes:eq(1)").val(minutes[0]);-->
+<!--            }-->
+<!--            else{-->
+<!--                if($("input.minutes:eq(0)").val()=='')-->
+<!--                    $("input.minutes:eq(0)").val(minutes[0]);-->
+<!--                if($("input.minutes:eq(1)").val()=='')-->
+<!--                    $("input.minutes:eq(1)").val(minutes[1]);-->
+<!--            }-->
 			
 			$("#date,#hours_0,#hours_1,.minutes").on('change',function(){
 			//Refresh map

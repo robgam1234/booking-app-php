@@ -219,12 +219,12 @@ class Account {
 
         $tmp = json_decode($result, true);
         $full_time = $tmp['time'];
-
         $parsed_time = array(
             "fulltime" => $full_time,
             "hour" => date_format(date_create($full_time), "H"),
             "minutes" => date_format(date_create($full_time), "i"),
-            "date" => date_format(date_create($full_time), "d/m/Y")
+            "date" => date_format(date_create($full_time), "d/m/Y"),
+            "timezone" => $tmp['timezone']
         );
 
         return $parsed_time;
